@@ -8,7 +8,7 @@ Four-stage horizontal flow, each card color-coded with a top border.
 
 ```html
 <div class="page aurora">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div class="hd">
     <div class="eyebrow"><span class="dot"></span>System architecture</div>
     <h1 class="title">Request pipeline: <span class="spec">retrieve, reason, verify</span></h1>
@@ -44,7 +44,7 @@ Four-stage horizontal flow, each card color-coded with a top border.
 
 ```html
 <div class="page dark">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div class="hd">
     <div class="eyebrow on-dark"><span class="dot"></span>Cost model</div>
     <h1 class="title on-dark">Pricing and <span class="spec">caching impact</span></h1>

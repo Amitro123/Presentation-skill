@@ -18,6 +18,9 @@ All colors are CSS custom properties on `:root`. Change them and every slide fol
   --on-dark: #FFFFFF;  --on-dark-2: rgba(255,255,255,.82);
   --highlight: var(--c4);                          /* emphasis inside .take */
   --font: 'Inter', system-ui, sans-serif;
+
+  --logo: url("assets/logo.svg");  --logo-dark: url("assets/logo-light.svg");
+  --logo-w: 200px;  --logo-h: 56px;  --logo-offset-x: 104px;  --logo-offset-y: 52px;
 }
 ```
 
@@ -55,7 +58,7 @@ Aurora and Dark Glow backgrounds are built from these tokens with `color-mix()`,
 | `.numchip` | Numbered circle for steps |
 | `.bartrack` / `.barfill` + `.f-1`…`.f-6` | Horizontal comparison bars |
 | `.bignum` | Oversized statistic |
-| `.wm` | Logo slot (top corner, opposite the text start edge) |
+| `.wm` | Logo slot — image from `--logo`/`--logo-dark`, position from `data-logo` on `#deck` (`top-end` default, `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center`, `none`) |
 
 Layout helpers: `.fx .col .ac .jc .jb .f1 .wrap .grid`, weights `.fw5–.fw8`.
 
@@ -65,7 +68,7 @@ Layout helpers: `.fx .col .ac .jc .jb .f1 .wrap .grid`, weights `.fw5–.fw8`.
 |---|---|
 | Hardcoding hex colors on a slide | Use tokens (`var(--c1)`) or the `.f-*` helpers |
 | Packing 7+ bullets on a slide | Split into two slides |
-| Redrawing the logo in SVG/text | Use one image file in `.wm` |
+| Redrawing the logo in SVG/text, or a per-slide `<img>` | Set `--logo` once; keep `.wm` empty |
 | Emoji as bullets | `.dot`, `.numchip` |
 | Plain slide with no accent | Every slide carries at least one of `.spec`, `.specbar`, `.dot`, `.accent-border` |
 | Latin terms breaking RTL punctuation | `<span dir="ltr">…</span>` |

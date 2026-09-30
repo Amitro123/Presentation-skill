@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Hebrew (RTL) example built from template.html: only lang/dir, the font and the slides differ. -->
+<!-- Hebrew (RTL) example built from template.html: only lang/dir, the font, the logo path and the slides differ. -->
 <html lang="he" dir="rtl"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,6 +30,14 @@
   --highlight: var(--c4);
 
   --font: 'Heebo', 'Arial Hebrew', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+
+  /* ---- Logo: one place to change it ---- */
+  --logo: url("../assets/logo-placeholder.svg");   /* logo for light slides */
+  --logo-dark: var(--logo);                     /* optional light variant for .dark slides, e.g. url("assets/logo-light.svg") */
+  --logo-w: 200px;                              /* logo box size; the image is fitted inside (contain) */
+  --logo-h: 56px;
+  --logo-offset-x: 104px;                       /* distance from the side edge */
+  --logo-offset-y: 52px;                        /* distance from the top/bottom edge */
 }
 * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 html, body {
@@ -127,9 +135,25 @@ html, body {
 .take { border-radius: 16px; padding: 22px 34px; font-size: 27px; font-weight: 700; line-height: 1.32; background: color-mix(in srgb, var(--ink) 94%, transparent); color: var(--on-dark); }
 .take .hi { color: var(--highlight); }
 
-/* Logo slot — keep on every slide, or delete the blocks if you have no logo */
-.wm { position: absolute; top: 52px; right: 104px; display: flex; align-items: center; z-index: 100; }
-[dir="rtl"] .wm { right: auto; left: 104px; }
+/* Logo slot — one .wm per slide; image comes from --logo / --logo-dark.
+   Position is set with data-logo on #deck:
+   top-end (default) | top-start | top-center | bottom-start | bottom-end | bottom-center | none
+   "start"/"end" follow the reading direction, so they mirror automatically in RTL. */
+.wm {
+  position: absolute; z-index: 100;
+  width: var(--logo-w); height: var(--logo-h);
+  background: var(--logo) center / contain no-repeat;
+  inset-block-start: var(--logo-offset-y); inset-inline-end: var(--logo-offset-x);
+}
+.dark .wm { background-image: var(--logo-dark); }
+#deck[data-logo="top-start"]     .wm { inset-inline-end: auto; inset-inline-start: var(--logo-offset-x); }
+#deck[data-logo="top-center"]    .wm { inset-inline-end: auto; inset-inline-start: calc(50% - var(--logo-w) / 2); }
+#deck[data-logo="bottom-start"]  .wm { inset-block-start: auto; inset-block-end: var(--logo-offset-y); inset-inline-end: auto; inset-inline-start: var(--logo-offset-x); }
+#deck[data-logo="bottom-end"]    .wm { inset-block-start: auto; inset-block-end: var(--logo-offset-y); }
+#deck[data-logo="bottom-center"] .wm { inset-block-start: auto; inset-block-end: var(--logo-offset-y); inset-inline-end: auto; inset-inline-start: calc(50% - var(--logo-w) / 2); }
+#deck[data-logo="none"] .wm { display: none; }
+/* A logo at the top-start or top-center would sit on the eyebrow/title, so reserve a row for it */
+#deck[data-logo="top-start"] .page, #deck[data-logo="top-center"] .page { padding-top: 150px; }
 
 /* Content helpers */
 .bartrack { flex: 1; height: 46px; border-radius: 999px; background: rgba(15,23,42,.07); overflow: hidden; display: flex; }
@@ -154,10 +178,10 @@ html, body {
 </style>
 </head>
 <body>
-  <div id="deck">
+  <div id="deck" data-logo="top-end">
     <!-- SLIDE 1: שער -->
     <div class="page aurora fx col ac jc">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="fx col ac" style="gap:34px;text-align:center;max-width:1400px;">
         <div class="eyebrow"><span class="dot"></span>הדרכה · <span dir="ltr">AI Workshop</span></div>
         <h1 class="title" style="font-size:104px;line-height:1.02;">כותרת ראשית עם<br><span class="spec">ביטוי מודגש</span></h1>
@@ -168,7 +192,7 @@ html, body {
 
     <!-- SLIDE 2: נקודות -->
     <div class="page aurora">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="hd">
         <div class="eyebrow"><span class="dot"></span>סקירה</div>
         <h1 class="title">כותרת השקופית</h1>
@@ -184,7 +208,7 @@ html, body {
 
     <!-- SLIDE 3: השוואה -->
     <div class="page aurora">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="hd">
         <div class="eyebrow"><span class="dot"></span>השוואה</div>
         <h1 class="title">לפני ואחרי</h1>
@@ -213,7 +237,7 @@ html, body {
 
     <!-- SLIDE 4: נתונים -->
     <div class="page aurora">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="hd">
         <div class="eyebrow"><span class="dot"></span>נתונים</div>
         <h1 class="title">כותרת עם מספר מרכזי</h1>
@@ -236,7 +260,7 @@ html, body {
 
     <!-- SLIDE 5: שלבים -->
     <div class="page aurora">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="hd" style="margin-bottom:34px;">
         <div class="eyebrow"><span class="dot"></span>תהליך</div>
         <h1 class="title">איך זה עובד, שלב אחר שלב</h1>
@@ -250,7 +274,7 @@ html, body {
 
     <!-- SLIDE 6: מפריד פרקים -->
     <div class="page dark fx col ac jc">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;filter:brightness(0) invert(1);"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div class="fx col ac" style="gap:28px;text-align:center;max-width:1300px;">
         <div class="eyebrow on-dark"><span class="dot"></span>חלק שני</div>
         <h1 class="title on-dark" style="font-size:88px;">אמירה מרכזית עם <span class="spec">דגש</span></h1>
@@ -261,7 +285,7 @@ html, body {
 
     <!-- SLIDE 7: סיכום -->
     <div class="page aurora fx col ac jc">
-      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="wm" role="img" aria-label="לוגו"></div>
       <div style="width:100%;">
         <div class="fx col ac" style="gap:12px;text-align:center;margin-bottom:28px;">
           <div class="eyebrow"><span class="dot"></span>לסיכום</div>

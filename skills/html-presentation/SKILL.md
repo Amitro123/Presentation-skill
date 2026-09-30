@@ -15,33 +15,47 @@ The skill is organised in four layers:
 3. **Formatter** — apply the exact CSS tokens, 1920×1080 canvas and tested slide components.
 4. **Checker** — run a binary checklist and repair failures before handing the file back.
 
-## Reference map
+## Configuration and reference resolution
 
-Read only what the task needs:
+Nothing in this skill is fixed. Colors, fonts, logo, logo position, language, slide counts, density limits, visual modes, the reference files themselves and the checks are all defaults the user can change.
 
-- Design tokens, modes, components, traps: [references/design-system.md](./references/design-system.md)
-- Copy-paste slide HTML: [references/slide-templates.md](./references/slide-templates.md)
-- Technical/architecture slide patterns: [references/technical-patterns.md](./references/technical-patterns.md)
-- Verification checklist and repair runbook: [references/verification-checker.md](./references/verification-checker.md)
+**Precedence, highest first:**
+
+1. What the user says in the current request.
+2. `assets/brand.md` — structured settings plus free-text rules (schema: [`assets/brand.example.md`](../../assets/brand.example.md)).
+3. `assets/references/` — the user's own reference files.
+4. This skill's `references/` — the defaults.
+
+**Reference files:**
+
+- Default files: [design-system](./references/design-system.md) (tokens, modes, components, traps), [slide-templates](./references/slide-templates.md) (copy-paste slides), [technical-patterns](./references/technical-patterns.md) (architecture, cost, security slides), [verification-checker](./references/verification-checker.md) (checklist and repair).
+- A file in `assets/references/` with the **same name** as a default replaces it.
+- A file with a **new name** is additional; read it whenever its topic applies (e.g. `assets/references/chart-styles.md`).
+- `references.disable` in `brand.md` drops a default file entirely; `references.extra` lists further files to load.
+- Read only what the task needs, and say which files you used when the choice was not obvious.
+
+If the user asks for something the defaults forbid (another font, six bullets, no logo, a fourth visual mode), follow the user, apply it consistently across the deck, and mention the deviation in the report instead of "fixing" it.
 
 ## Workflow
 
-### 0. Adapt to brand assets (first run, or when `assets/` changes)
+### 0. Load configuration and adapt to assets (first run, or when `assets/` changes)
 
-Check `assets/` for anything beyond `logo-placeholder.svg` and `README.md`. If the user added brand material:
+1. Read `assets/brand.md` if present, list `assets/references/`, and look at other files in `assets/` beyond the placeholders.
+2. If the user supplied brand material (logos, palette or style screenshots, brand guide PDFs, fonts) but no explicit values, derive the theme: `--c1`…`--c6` from the brand's accent colors, `--ink`/`--ink-2` from the darkest, `--bg`/`--bg-2` from the lightest, `--font` from the named font. Keep text/background contrast high.
+3. Apply settings by editing only the `:root` block and the `data-logo` attribute of `template.html`:
+   - colors and `--font`;
+   - `--logo`, `--logo-dark`, `--logo-w`, `--logo-h`, `--logo-offset-*`;
+   - `data-logo` on `#deck`: `top-end` (default), `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center` or `none`;
+   - `lang`/`dir` on `<html>`.
+4. If the defaults in `references/` now disagree with the configuration (palette values, logo position, limits), update the copy the user keeps — `assets/references/` — rather than silently diverging. Edit the skill's own default files only if the user asks.
+5. Render the template, look at a light and a dark slide, fix contrast or overlap problems, and report which settings changed and why.
 
-1. Read it: logos, palette or style screenshots, brand guide PDFs, fonts, and `assets/brand.md` if present. Treat `brand.md` as constraints (forbidden colors, tone, language).
-2. Derive the theme: pick `--c1`…`--c6` from the brand palette (accent hues first), `--ink`/`--ink-2` from the darkest brand color, `--bg`/`--bg-2` from the lightest, `--font` from the named font. Keep text/background contrast high.
-3. Edit only the `:root` block in `template.html`, then mirror the new values in `references/design-system.md` and, if they appear, `docs/design-system.md`.
-4. Point every `.wm` logo at the user's file. For `dark` slides use a light logo variant if provided, else keep the `filter:brightness(0) invert(1)` trick for single-color marks.
-5. Render the template, look at a light and a dark slide, fix contrast problems, and report which tokens changed and why.
-
-Skip this step if `assets/` holds only the placeholder.
+Skip this step if `assets/` holds only the placeholders and the user gave no settings.
 
 ### 1. Plan the narrative (Doer)
 
 1. Read the brief, PDF or notes. Identify audience, goal and the one takeaway.
-2. Outline **8–14 slides**, one idea each. A typical flow:
+2. Outline **8–14 slides** (or the `slides` range in `brand.md`), one idea each. A typical flow:
    - Cover
    - Context / problem
    - Approach or architecture
@@ -61,17 +75,17 @@ Skip this step if `assets/` holds only the placeholder.
 1. Start from `template.html`; keep its CSS core, navigation markup and `<script>` untouched.
 2. Set `<title>`, and `lang`/`dir` on `<html>` for the deck's language (`dir="rtl"` for Hebrew, Arabic, etc.).
 3. Replace the example slides inside `<div id="deck">`. Label each `<!-- SLIDE N: title -->`.
-4. Every slide carries the logo slot (`.wm`) — if the user has no logo, remove it from all slides consistently — and at least one accent element (`.spec`, `.specbar`, `.dot` or `.accent-border`).
+4. Every slide carries an empty logo slot `<div class="wm" role="img" aria-label="Logo"></div>` (image and position come from the tokens; use `data-logo="none"` for no logo) and at least one accent element (`.spec`, `.specbar`, `.dot` or `.accent-border`).
 5. Use theme tokens (`var(--c1)`…) instead of hex values. If the user wants a different palette, change the `:root` block only.
 6. Save to the workspace root with a descriptive kebab-case name, e.g. `q3-product-review.html`. Images go in `assets/`.
 
 ### 4. Verify and repair (Checker)
 
-Run the checklist in [references/verification-checker.md](./references/verification-checker.md). If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
+Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
 
 ## Content rules
 
-- Max ~5 bullets, ~3 stats, ~5 steps per slide; split otherwise.
+- Default limits: ~5 bullets, ~3 stats, ~5 steps per slide (`max_*` in `brand.md` overrides); split otherwise.
 - No emoji. Use `.dot`, `.numchip`, `.chip`.
 - In RTL decks wrap Latin terms, code and unit-bearing numbers in `<span dir="ltr">…</span>`.
 - Keep one idea and one takeaway per slide; the `.take` strip holds it.

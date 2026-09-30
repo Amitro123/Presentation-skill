@@ -32,23 +32,32 @@ Replace the slides inside `<div id="deck">`. Navigation, dots and the counter up
   - `clean-bordered` — plain white with a gradient frame (`.accent-border`); tables and data.
 - **Theme tokens** — every color lives in the `:root` block (`--c1`…`--c6`, `--ink`, `--muted`, `--bg`, …). Edit them once to re-skin the deck.
 - **Components:** `.glass` and `.inkcard` surfaces, `.eyebrow` label, `.title` / `.sub`, `.take` takeaway strip, `.numchip`, bars, big numbers.
-- **Logo slot:** `.wm` holds an optional logo on every slide. Replace `assets/logo-placeholder.svg` or delete the blocks.
+- **Logo slot:** an empty `.wm` on every slide; the image, size and position come from `--logo*` tokens and `data-logo` (see [Making it yours](#making-it-yours)).
 - **Language:** English/LTR by default. For Hebrew, Arabic and other RTL languages set `<html dir="rtl" lang="…">` and change the font; the layout, logo slot, arrow keys and swipe mirror automatically. See [`examples/hebrew-example.html`](examples/hebrew-example.html).
 
 Full reference: [`docs/design-system.md`](docs/design-system.md) and [`docs/guidelines.md`](docs/guidelines.md).
 
-## Adapting to your brand
+## Making it yours
 
-1. Put your brand material in [`assets/`](assets/README.md): a logo, and anything that shows your colors and style (brand guide, palette screenshot, an existing slide), plus optional fonts and a `brand.md` with rules.
-2. Ask Claude: *"Adapt this project to the assets I added."*
-3. Following the skill's brand-adaptation step, Claude will:
-   - read the files in `assets/` and pick the palette from them;
-   - update the theme tokens in `:root` of `template.html` (`--c1`…`--c6`, `--ink`, `--bg`, `--font`);
-   - point every logo slot (`.wm`) at your logo, using a light variant on dark slides if you provide one;
-   - mirror those changes in the skill's reference files so generated decks use the same brand;
-   - rebuild the preview, check contrast, and report what changed.
+Nothing is fixed. Colors, font, logo, logo position, language, slide counts, density limits and even the skill's reference files are defaults you can override.
 
-Nothing else in the template needs editing.
+**Quick way** — put brand material in [`assets/`](assets/README.md) (logo, palette or style screenshots, brand guide, fonts) and ask Claude: *"Adapt this project to the assets I added."* Claude reads them, picks a palette, sets the logo and updates the template, then shows you what changed.
+
+**Explicit way** — copy [`assets/brand.example.md`](assets/brand.example.md) to `assets/brand.md` and set only what you care about: colors, font, `logo_position`, `slides`, `max_bullets`, which reference files to use, which checks to skip. Anything you omit keeps its default.
+
+**By hand** — everything lives in the `:root` block of `template.html`:
+
+```css
+--c1 … --c6, --ink, --bg, --font      /* theme */
+--logo, --logo-dark, --logo-w/-h      /* logo image and size */
+```
+```html
+<div id="deck" data-logo="top-end">  <!-- top-end | top-start | top-center | bottom-start | bottom-end | bottom-center | none -->
+```
+
+`start`/`end` follow the reading direction, so the logo mirrors automatically in RTL decks.
+
+**Your own reference files** — the skill's rules live in `skills/html-presentation/references/`. To change them without editing the skill, put files in `assets/references/`: a file with the same name replaces the default, a new file is added. Order of precedence: your request → `assets/brand.md` → `assets/references/` → skill defaults.
 
 ## Export to PDF
 
@@ -68,14 +77,14 @@ skills/html-presentation/
     └── verification-checker.md   # binary checklist + self-repair runbook
 ```
 
-Install it the way your tool loads skills — for Claude Code, copy the folder to `.claude/skills/` (project) or `~/.claude/skills/` (global); for Claude.ai / Cowork, add it under *Settings → Skills*. Then ask, for example: *"Create a presentation from this document."* The skill plans 8–14 slides, builds the HTML from `template.html`, and runs its checklist before handing the file back.
+Its defaults are overridable (see above). Install it the way your tool loads skills — for Claude Code, copy the folder to `.claude/skills/` (project) or `~/.claude/skills/` (global); for Claude.ai / Cowork, add it under *Settings → Skills*. Then ask, for example: *"Create a presentation from this document."* The skill plans 8–14 slides, builds the HTML from `template.html`, and runs its checklist before handing the file back.
 
 ## Project layout
 
 ```
 .
 ├── template.html          # starter deck — copy this
-├── assets/                # your logo, brand references, images (see assets/README.md)
+├── assets/                # your logo, brand.md, references/, images (see assets/README.md)
 ├── examples/              # hebrew-example.html — RTL deck built from the template
 ├── docs/                  # design system + authoring guidelines
 ├── skills/html-presentation/

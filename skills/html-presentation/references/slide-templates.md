@@ -1,18 +1,20 @@
 # Slide Templates
 
-Copy-paste snippets for slides inside `<div id="deck">`. Each one shows the logo slot (`.wm`) — keep it consistent across the deck, or omit it everywhere if there is no logo. On `dark` slides invert a dark logo with `filter:brightness(0) invert(1)` or supply a light version.
+Copy-paste snippets for slides inside `<div id="deck">`. Each one includes the logo slot (`.wm`); keep it on every slide or use `data-logo="none"`.
 
 ## Logo slot
 
 ```html
-<div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+<div class="wm" role="img" aria-label="Logo"></div>
 ```
+
+The image comes from `--logo` (and `--logo-dark` on `.dark` slides) in `:root`; the position comes from `data-logo` on `#deck`. Never put a per-slide image or position here — change the tokens. If the project uses no logo, set `data-logo="none"` (or remove the blocks everywhere).
 
 ## 1. Cover (Aurora or Dark)
 
 ```html
 <div class="page aurora fx col ac jc">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div class="fx col ac" style="gap:34px;text-align:center;max-width:1400px;">
     <div class="eyebrow"><span class="dot"></span>Category · Subtitle</div>
     <h1 class="title" style="font-size:104px;line-height:1.02;">Main title with a <span class="spec">highlight</span></h1>
@@ -28,7 +30,7 @@ For a dark cover use `class="page dark fx col ac jc"` and add `on-dark` to `.eye
 
 ```html
 <div class="page dark fx col ac jc">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div class="fx col ac" style="gap:26px;text-align:center;max-width:1300px;">
     <div class="eyebrow on-dark"><span class="dot"></span>Part 02</div>
     <h1 class="title on-dark" style="font-size:84px;">Next topic with a <span class="spec">key phrase</span></h1>
@@ -42,7 +44,7 @@ For a dark cover use `class="page dark fx col ac jc"` and add `on-dark` to `.eye
 
 ```html
 <div class="page aurora">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div class="hd">
     <div class="eyebrow"><span class="dot"></span>Topic</div>
     <h1 class="title">Slide headline</h1>
@@ -111,7 +113,7 @@ Place it after a `.hd` header block; add a `.take` strip underneath.
 
 ```html
 <div class="page aurora fx col ac jc">
-  <div class="wm"><img src="assets/logo.svg" alt="Logo" style="height:56px;width:auto;"></div>
+  <div class="wm" role="img" aria-label="Logo"></div>
   <div style="width:100%;">
     <div class="fx col ac" style="gap:12px;text-align:center;margin-bottom:28px;">
       <div class="eyebrow"><span class="dot"></span>Summary</div>

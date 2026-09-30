@@ -16,6 +16,9 @@ Colors are defined once in `:root`; nothing else in the file hardcodes a color.
   --on-dark: #FFFFFF;  --on-dark-2: rgba(255,255,255,.82);
   --highlight: var(--c4);
   --font: 'Inter', system-ui, sans-serif;
+
+  --logo: url("assets/logo.svg");  --logo-dark: url("assets/logo-light.svg");
+  --logo-w: 200px;  --logo-h: 56px;  --logo-offset-x: 104px;  --logo-offset-y: 52px;
 }
 ```
 
@@ -41,7 +44,7 @@ To re-brand a deck, change these values only. Aurora/Dark backgrounds derive fro
 
 ## 4. Components
 
-- `.wm` — logo slot, top corner opposite the text start edge.
+- `.wm` — logo slot. Image from `--logo` / `--logo-dark`; size and offsets from `--logo-*`; position from `data-logo` on `#deck`: `top-end` (default), `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center`, `none`. `start`/`end` follow the reading direction.
 - `.glass` — frosted card. `.inkcard` — dark emphasis card.
 - `.spec` — gradient text. `.specbar` — gradient fill. `.dot` — gradient bullet.
 - `.take` — bottom takeaway strip; `<span class="hi">` highlights a phrase.
@@ -60,7 +63,7 @@ To re-brand a deck, change these values only. Aurora/Dark backgrounds derive fro
 
 | Trap | Required behavior |
 |---|---|
-| Logo redrawn as SVG/text per slide | One image file in `.wm`, same on every slide |
+| Logo redrawn as SVG/text or a per-slide `<img>` | Set `--logo` once; `.wm` stays empty |
 | Hardcoded hex colors | Tokens or `.f-*` helpers |
 | 7+ bullets / 5 dense cards | Split across slides |
 | Emoji | `.dot`, `.numchip`, `.chip` |
