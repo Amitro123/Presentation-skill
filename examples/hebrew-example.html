@@ -19,6 +19,7 @@
   --c5: #06B6D4;   /* cyan    */
   --c6: #10B981;   /* emerald */
   --accent: linear-gradient(135deg, var(--c1) 0%, var(--c2) 40%, var(--c3) 75%, var(--c4) 100%);
+  --accent-on-dark: var(--accent);             /* gradient used for .spec text on .dark slides; set a lighter one if --accent starts dark */
 
   --ink: #0F172A;
   --ink-2: #1E293B;
@@ -122,6 +123,7 @@ html, body {
 .glass { background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.78); border-radius: 20px; box-shadow: 0 16px 46px rgba(15,23,42,.10); }
 .inkcard { background: linear-gradient(150deg, var(--ink), var(--ink-2)); color: var(--on-dark); border-radius: 20px; box-shadow: 0 18px 48px rgba(15,23,42,.30); }
 .spec { background: var(--accent); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; } /* gradient text */
+.dark .spec { background-image: var(--accent-on-dark); }
 .specbar { background: var(--accent); }                                                                                           /* gradient fill */
 .ink-t { color: var(--ink); } .muted { color: var(--muted); } .white { color: var(--on-dark); } .white-2 { color: var(--on-dark-2); }
 .eyebrow { display: inline-flex; align-items: center; gap: .55em; padding: .5em 1.15em; border-radius: 999px; background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.85); color: var(--ink); font-weight: 700; font-size: 21px; width: fit-content; }

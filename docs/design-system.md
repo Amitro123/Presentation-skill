@@ -24,6 +24,8 @@ All colors are CSS custom properties on `:root`. Change them and every slide fol
 }
 ```
 
+`--accent-on-dark` is the gradient used for `.spec` text on `.dark` slides; it defaults to `--accent`. Set a lighter gradient if your accent starts with a dark shade.
+
 Aurora and Dark Glow backgrounds are built from these tokens with `color-mix()`, so a new palette re-tints them automatically.
 
 ## Visual modes

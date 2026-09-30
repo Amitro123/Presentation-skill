@@ -56,6 +56,8 @@ A reference deck is a finished deck the user was happy with. It carries the look
    - `--logo`, `--logo-dark`, `--logo-w`, `--logo-h`, `--logo-offset-*`;
    - `data-logo` on `#deck`: `top-end` (default), `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center` or `none`;
    - `lang`/`dir` on `<html>`.
+   Logo preparation: use a transparent PNG or SVG cropped to the mark. If the supplied file is a raster image with an opaque background (for example gold on black), cut out the mark and convert the background to transparency (luminance-to-alpha works for dark backgrounds); drop placeholder text such as "Your tagline here". Check the result on a light and a dark slide.
+   Dark slides: if `--accent` starts with a dark shade, set a lighter `--accent-on-dark` so gradient text stays readable on `.dark` slides.
 4. If the defaults in `references/` now disagree with the configuration (palette values, logo position, limits), update the copy the user keeps — `assets/references/` — rather than silently diverging. Edit the skill's own default files only if the user asks.
 5. Render the template, look at a light and a dark slide, fix contrast or overlap problems, and report which settings changed and why.
 
