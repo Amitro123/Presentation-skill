@@ -10,7 +10,7 @@ You have a presentation to deliver in an hour. The design tool has used up your 
 - **It is easy to change.** Every color, the font, the logo and its position, the language and text direction, the slide count and even the skill's own rules are settings you can override — by hand, in a short configuration file, or simply by asking Claude.
 - **Right-to-left is built in.** Hebrew, Arabic and other RTL languages mirror the layout, logo slot, arrow keys and swipe direction automatically. See [`examples/hebrew-example.html`](examples/hebrew-example.html).
 - **Made for large screens.** A fixed 1920×1080 canvas scales to any display, with text sized for reading from across a room.
-- **Cheap to iterate.** Fixing a slide means editing a few lines of text, not regenerating a design. Small corrections cost very few tokens.
+- **Cheap to iterate.** An assistant writes a few kilobytes of content, not a whole page of HTML, and a script assembles the deck. Fixing a slide means editing a few lines of text.
 - **Checks itself.** A built-in checklist and an automated audit catch overflow, missing images, broken navigation and PDF problems before you walk on stage.
 
 ### What to expect
@@ -20,6 +20,8 @@ This is not a one-click generator. A first draft from a good brief is usually cl
 ## Quick start
 
 **With an AI assistant (recommended).** Install the skill from [`skills/html-presentation/`](skills/html-presentation/SKILL.md) and ask for a presentation. Claude asks who the audience is, how many slides you need and whether to show the presenter's name, then asks for your source documents and builds the deck. Details below.
+
+**From a content file.** Write the words as a small JSON file and build the HTML with `node tools/build-deck.js my-deck.json` — see [`examples/quarterly-review.json`](examples/quarterly-review.json). This is what the AI skill does, and it is the cheapest way to produce a deck.
 
 **By hand.**
 
@@ -45,6 +47,7 @@ skills/html-presentation/
 ├── SKILL.md                      # workflow and rules
 └── references/
     ├── design-system.md          # tokens, modes, components, known traps
+    ├── content-format.md         # JSON format for tools/build-deck.js (default build path)
     ├── slide-templates.md        # copy-paste HTML for each slide type
     ├── technical-patterns.md     # pipelines, cost tables, security/architecture slides
     └── verification-checker.md   # checklist and self-repair runbook
@@ -60,7 +63,7 @@ Install it the way your tool loads skills: for Claude Code, copy the folder to `
    - how many slides you need;
    - whether the presenter's name should appear on the cover, and what it is.
 3. You answer, then attach whatever source material you like — documents, PDFs, notes, data, links, images — or state that there is none.
-4. Claude builds the deck from `template.html`, fitted to the audience and slide count, and runs its checklist.
+4. Claude writes a short content file, builds the deck with `tools/build-deck.js`, fitted to the audience and slide count, and runs its checklist.
 5. You refine it in plain language.
 
 Questions already answered in your first message, or set in `assets/brand.md` (`audience`, `author`, `slides`), are not asked again.
@@ -129,10 +132,13 @@ It also works on single-file decks not built from this template, as long as slid
 ```
 .
 ├── template.html          # starter deck — copy this
-├── examples/              # hebrew-example.html — RTL deck built from the template
+├── examples/              # quarterly-review (LTR) and hebrew-example (RTL): content .json + built .html
 ├── assets/                # your logo, brand.md, references/, images (see assets/README.md)
 ├── docs/                  # design system + authoring guidelines
-├── tools/audit-deck.js    # automated deck audit (Playwright)
+├── tools/
+│   ├── build-deck.js      # content file (JSON) → finished deck
+│   ├── prepare-logo.py    # any logo image → transparent PNG
+│   └── audit-deck.js      # automated deck audit (Playwright)
 ├── skills/html-presentation/
 └── .github/workflows/     # HTML validation on push / PR
 ```

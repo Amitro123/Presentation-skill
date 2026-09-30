@@ -3,8 +3,9 @@
   "private": true,
   "description": "HTML presentation template and AI skill",
   "scripts": {
-    "validate": "html-validate \"*.html\" \"examples/*.html\"",
-    "audit": "node tools/audit-deck.js template.html examples/hebrew-example.html"
+    "validate": "npx --yes html-validate@9 \"*.html\" \"examples/*.html\"",
+    "audit": "node tools/audit-deck.js template.html examples/quarterly-review.html examples/hebrew-example.html",
+    "build:examples": "node tools/build-deck.js examples/quarterly-review.json --out=examples/quarterly-review.html && node tools/build-deck.js examples/hebrew-example.json --out=examples/hebrew-example.html"
   },
   "devDependencies": {
     "html-validate": "^9",

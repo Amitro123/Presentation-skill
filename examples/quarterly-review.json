@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "title": "Q3 Product Review",
+    "lang": "en",
+    "dir": "ltr",
+    "author": "Jordan Lee",
+    "role": "Head of Product",
+    "date": "October 2026",
+    "logoPosition": "top-end",
+    "logo": "../assets/logo-placeholder.svg",
+    "logoDark": "../assets/logo-placeholder-light.svg"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "mode": "dark",
+      "eyebrow": "Quarterly review · Q3",
+      "title": "Faster releases,\n*fewer surprises*",
+      "subtitle": "What shipped, what we learned, and what we commit to next quarter."
+    },
+    {
+      "type": "bullets",
+      "eyebrow": "Highlights",
+      "title": "Three things that moved the numbers",
+      "subtitle": "Out of eleven launches, these had the largest measurable effect.",
+      "items": [
+        "Self-serve onboarding cut *time to first value* from 9 days to 3.",
+        "The new export API removed the top support request of the quarter.",
+        "Weekly release trains replaced ad-hoc deploys across all teams."
+      ],
+      "takeaway": "Smaller, more frequent releases gave us *earlier feedback* at lower risk."
+    },
+    {
+      "type": "stats",
+      "eyebrow": "Results",
+      "title": "Support load dropped by a third",
+      "subtitle": "Tickets per 1,000 active accounts, compared with last quarter.",
+      "bars": [
+        {
+          "label": "Q2",
+          "value": 90,
+          "text": "42 tickets",
+          "color": 3
+        },
+        {
+          "label": "Q3",
+          "value": 60,
+          "text": "28 tickets",
+          "color": 6
+        }
+      ],
+      "big": {
+        "value": "-33%",
+        "caption": "support tickets\nper active account"
+      },
+      "takeaway": "Fewer tickets free roughly *two engineer-weeks* per month."
+    },
+    {
+      "type": "compare",
+      "eyebrow": "Process",
+      "title": "How we ship, before and after",
+      "left": {
+        "label": "Before",
+        "title": "Ad-hoc deploys",
+        "items": [
+          "Releases whenever a feature was ready",
+          "Manual regression testing",
+          "Rollbacks took hours"
+        ]
+      },
+      "right": {
+        "label": "After",
+        "title": "Weekly release train",
+        "items": [
+          "Fixed release window every Tuesday",
+          "*Automated* regression suite",
+          "Rollback in minutes"
+        ]
+      },
+      "takeaway": "Predictability is what let other teams plan around us."
+    },
+    {
+      "type": "steps",
+      "eyebrow": "Next quarter",
+      "title": "Our plan for Q4",
+      "steps": [
+        {
+          "title": "Stabilize",
+          "text": "Close the ten open reliability issues before any new feature work."
+        },
+        {
+          "title": "Extend",
+          "text": "Bring the export API to the two remaining product lines."
+        },
+        {
+          "title": "Measure",
+          "text": "Track time to first value weekly and publish it to the whole company."
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "eyebrow": "Closing",
+      "lead": "The goal for Q4 is simple:",
+      "title": "Ship *less risk*,\nnot less often",
+      "note": "Questions and feedback: product@example.com"
+    }
+  ]
+}

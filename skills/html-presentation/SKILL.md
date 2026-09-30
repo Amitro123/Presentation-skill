@@ -28,7 +28,7 @@ Nothing in this skill is fixed. Colors, fonts, logo, logo position, language, sl
 
 **Reference files:**
 
-- Default files: [design-system](./references/design-system.md) (tokens, modes, components, traps), [slide-templates](./references/slide-templates.md) (copy-paste slides), [technical-patterns](./references/technical-patterns.md) (architecture, cost, security slides), [verification-checker](./references/verification-checker.md) (checklist and repair).
+- Default files: [content-format](./references/content-format.md) (the JSON format `tools/build-deck.js` turns into a deck), [design-system](./references/design-system.md) (tokens, modes, components, traps), [slide-templates](./references/slide-templates.md) (copy-paste slides), [technical-patterns](./references/technical-patterns.md) (architecture, cost, security slides), [verification-checker](./references/verification-checker.md) (checklist and repair).
 - A file in `assets/references/` with the **same name** as a default replaces it.
 - A file with a **new name** is additional; read it whenever its topic applies (e.g. `assets/references/chart-styles.md`).
 - `references.disable` in `brand.md` drops a default file entirely; `references.extra` lists further files to load.
@@ -51,13 +51,13 @@ A reference deck is a finished deck the user was happy with. It carries the look
 
 1. Read `assets/brand.md` if present, list `assets/references/`, and look at other files in `assets/` beyond the placeholders.
 2. If the user supplied brand material (logos, palette or style screenshots, brand guide PDFs, fonts) but no explicit values, derive the theme: `--c1`…`--c6` from the brand's accent colors, `--ink`/`--ink-2` from the darkest, `--bg`/`--bg-2` from the lightest, `--font` from the named font. Keep text/background contrast high.
-3. Apply settings by editing only the `:root` block and the `data-logo` attribute of `template.html`:
+3. Apply settings through `meta` in the content file (`tokens`, `font`, `logo`, `logoDark`, `logoSize`, `logoPosition`, `lang`, `dir`) or, for hand-edited decks, through the `:root` block and the `data-logo` attribute of `template.html`:
    - colors and `--font`;
    - `--logo`, `--logo-dark`, `--logo-w`, `--logo-h`, `--logo-offset-*`;
    - `data-logo` on `#deck`: `top-end` (default), `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center` or `none`;
    - `lang`/`dir` on `<html>`.
-   Logo preparation: use a transparent PNG or SVG cropped to the mark. If the supplied file is a raster image with an opaque background (for example gold on black), cut out the mark and convert the background to transparency (luminance-to-alpha works for dark backgrounds); drop placeholder text such as "Your tagline here". Check the result on a light and a dark slide.
-   Dark slides: if `--accent` starts with a dark shade, set a lighter `--accent-on-dark` so gradient text stays readable on `.dark` slides.
+   Logo preparation: use a transparent PNG or SVG cropped to the mark. If the supplied file is a raster image with an opaque background (for example gold on black), run `python3 tools/prepare-logo.py <input> assets/logo.png [--crop x0,y0,x1,y1] [--background dark|light]`; use `--crop` to drop placeholder text such as "Your tagline here". Look at the two generated preview images (light and dark) before using the result.
+   Dark slides: if `--accent` starts with a dark shade, set a lighter `accentOnDark` token (`--accent-on-dark` in CSS) so gradient text stays readable on `.dark` slides.
 4. If the defaults in `references/` now disagree with the configuration (palette values, logo position, limits), update the copy the user keeps — `assets/references/` — rather than silently diverging. Edit the skill's own default files only if the user asks.
 5. Render the template, look at a light and a dark slide, fix contrast or overlap problems, and report which settings changed and why.
 
@@ -99,17 +99,23 @@ Rules:
 
 ### 4. Build the file
 
-1. Start from `template.html`; keep its CSS core, navigation markup and `<script>` untouched.
-2. Set `<title>`, and `lang`/`dir` on `<html>` for the deck's language (`dir="rtl"` for Hebrew, Arabic, etc.).
-3. Replace the example slides inside `<div id="deck">`. Label each `<!-- SLIDE N: title -->`.
-4. Every slide carries an empty logo slot `<div class="wm" role="img" aria-label="Logo"></div>` (image and position come from the tokens; use `data-logo="none"` for no logo) and at least one accent element (`.spec`, `.specbar`, `.dot` or `.accent-border`).
-5. Use theme tokens (`var(--c1)`…) instead of hex values. If the user wants a different palette, change the `:root` block only.
-6. If the author should be shown, add `<div class="byline">Name · role · date</div>` to the cover only.
-7. Save to the workspace root with a descriptive kebab-case name, e.g. `q3-product-review.html`. Images go in `assets/`.
+**Default path — content file + builder** (cheapest and most consistent):
+
+1. Write `<name>.json` following [references/content-format.md](./references/content-format.md): `meta` (language, direction, author, logo paths, theme tokens) and `slides` by type. Do not read `template.html`; the builder uses it.
+2. Run `node tools/build-deck.js <name>.json --out=<name>.html` (add `--embed-logo` for a single file that can be sent as is). Fix any warnings it prints (density limits).
+3. Put images in `assets/` and reference them with paths relative to the output file.
+
+**Free-form path** — only when a slide cannot be expressed with the slide types: add it as a `raw` slide, or, for a fully custom deck, start from `template.html` and edit only the slides inside `<div id="deck">`. Follow the snippets in [references/slide-templates.md](./references/slide-templates.md); every slide needs the empty logo slot `<div class="wm" role="img" aria-label="Logo"></div>` (or `logoPosition: "none"`) and at least one accent element (`.spec`, `.specbar`, `.dot` or `.accent-border`).
+
+Both paths:
+- Keep the navigation markup, `<script>` and print CSS untouched.
+- Use theme tokens (`var(--c1)`…), never hex values. A different palette is a change to `meta.tokens` (or the `:root` block).
+- If the author should be shown, it appears on the cover byline only.
+- Save with a descriptive kebab-case name, e.g. `q3-product-review.html`.
 
 ### 5. Verify and repair (Checker)
 
-Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If Node and Chromium are available, also run `node tools/audit-deck.js <file>` and fix every FAIL. If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
+Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If Node and Chromium are available, also run `node tools/audit-deck.js <file>` and fix every FAIL. Look at screenshots only for the cover and for slides the audit flags; do not review every slide visually. If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
 
 ## Content rules
 

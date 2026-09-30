@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!-- Built with the html-presentation skill (tools/build-deck.js) from a content file. -->
-<html lang="he" dir="rtl"><head>
+<html lang="en" dir="ltr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מצגת לדוגמה בעברית</title>
+<title>Q3 Product Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 @page { size: 1920px 1080px; margin: 0; }
@@ -30,7 +30,7 @@
   --on-dark-2: rgba(255,255,255,.82);
   --highlight: var(--c4);
 
-  --font: 'Heebo', 'Arial Hebrew', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
 
   /* ---- Logo: one place to change it ---- */
   --logo: url("../assets/logo-placeholder.svg");   /* logo for light slides */
@@ -190,124 +190,110 @@ html, body {
 <body>
   <div id="deck" data-logo="top-end">
 
-    <!-- SLIDE 1: cover — כותרת ראשית עם  ביטוי מודגש  -->
-    <div class="page aurora fx col ac jc">
+    <!-- SLIDE 1: cover — Faster releases,  fewer surprises  -->
+    <div class="page dark fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="fx col ac" style="gap:34px;text-align:center;max-width:1500px;">
-        <div class="eyebrow"><span class="dot"></span>הדרכה · <span dir="ltr">AI Workshop</span></div>
-        <h1 class="title" style="font-size:100px;line-height:1.04;">כותרת ראשית עם<br><span class="spec">ביטוי מודגש</span></h1>
-        <p class="sub" style="font-size:33px;text-align:center;max-width:1180px;">משפט פתיחה אחד שמסביר על מה המצגת, בשפה פשוטה וברורה.</p>
+        <div class="eyebrow on-dark"><span class="dot"></span>Quarterly review · Q3</div>
+        <h1 class="title on-dark" style="font-size:100px;line-height:1.04;">Faster releases,<br><span class="spec">fewer surprises</span></h1>
+        <p class="sub on-dark" style="font-size:33px;text-align:center;max-width:1180px;">What shipped, what we learned, and what we commit to next quarter.</p>
         <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
-        <div class="byline">שם המציג · חודש שנה</div>
+        <div class="byline on-dark">Jordan Lee · Head of Product · October 2026</div>
       </div>
     </div>
 
-    <!-- SLIDE 2: bullets — כותרת השקופית -->
+    <!-- SLIDE 2: bullets — Three things that moved the numbers -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>סקירה</div>
-        <h1 class="title">כותרת השקופית</h1>
-        <p class="sub">משפט פתיחה שממסגר את הנקודות שלהלן, כולל מונח כמו <span dir="ltr">Claude Sonnet</span> בתוך טקסט עברי.</p>
+        <div class="eyebrow"><span class="dot"></span>Highlights</div>
+        <h1 class="title">Three things that moved the numbers</h1>
+        <p class="sub">Out of eleven launches, these had the largest measurable effect.</p>
       </div>
       <div class="glass f1 fx col" style="padding:46px 56px;gap:26px;margin-top:32px;justify-content:center;">
-        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c1);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">נקודה ראשונה — ברורה וממוקדת, שורה וחצי לכל היותר.</span></div>
-        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c3);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">נקודה שנייה עם מונח טכני: <span dir="ltr">RAG Pipeline</span>, ומשפט שממשיך אחריו.</span></div>
-        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c6);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">נקודה שלישית עם מספר ויחידה: $3.00 / <span dir="ltr">1M tokens</span>.</span></div>
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c1);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">Self-serve onboarding cut <span class="fw8">time to first value</span> from 9 days to 3.</span></div>
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c3);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">The new export API removed the top support request of the quarter.</span></div>
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c6);"></span><span class="ink-t fw6" style="font-size:28px;line-height:1.35;">Weekly release trains replaced ad-hoc deploys across all teams.</span></div>
       </div>
-      <div class="take" style="margin-top:28px;">מסקנה — <span class="hi">הדבר האחד שכדאי לזכור</span>.</div>
+      <div class="take" style="margin-top:28px;">Smaller, more frequent releases gave us <span class="hi">earlier feedback</span> at lower risk.</div>
     </div>
 
-    <!-- SLIDE 3: compare — לפני ואחרי -->
+    <!-- SLIDE 3: stats — Support load dropped by a third -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>השוואה</div>
-        <h1 class="title">לפני ואחרי</h1>
-      </div>
-      <div class="grid f1 ac" style="grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;">
-        <div class="glass" style="padding:44px;">
-          <div class="chip" style="background:rgba(110,98,87,.14);color:var(--muted);margin-bottom:20px;">אפשרות א'</div>
-          <div class="ink-t fw8" style="font-size:32px;line-height:1.2;margin-bottom:22px;">הגישה הנוכחית</div>
-          <div class="fx col" style="gap:20px;">
-            <div class="fx ac" style="gap:14px;"><span class="bullet" style="background:var(--muted);"></span><span class="muted fw6" style="font-size:25px;line-height:1.35;">מגבלה ראשונה</span></div>
-            <div class="fx ac" style="gap:14px;"><span class="bullet" style="background:var(--muted);"></span><span class="muted fw6" style="font-size:25px;line-height:1.35;">מגבלה שנייה</span></div>
-          </div>
-        </div>
-        <div class="inkcard" style="padding:44px;">
-          <div class="chip" style="background:rgba(255,255,255,.14);color:#fff;margin-bottom:20px;">אפשרות ב'</div>
-          <div class="white fw8" style="font-size:32px;line-height:1.2;margin-bottom:22px;">הגישה המומלצת</div>
-          <div class="fx col" style="gap:20px;">
-            <div class="fx ac" style="gap:14px;"><span class="dot" style="width:14px;height:14px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:25px;line-height:1.35;">יתרון ראשון</span></div>
-            <div class="fx ac" style="gap:14px;"><span class="dot" style="width:14px;height:14px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:25px;line-height:1.35;">יתרון שני <span class="white fw8">מודגש</span></span></div>
-          </div>
-        </div>
-      </div>
-      <div class="take" style="margin-top:28px;">שורה תחתונה — <span class="hi">ההחלטה המומלצת</span>.</div>
-    </div>
-
-    <!-- SLIDE 4: stats — כותרת עם מספר מרכזי -->
-    <div class="page aurora">
-      <div class="wm" role="img" aria-label="Logo"></div>
-      <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>נתונים</div>
-        <h1 class="title">כותרת עם מספר מרכזי</h1>
-        <p class="sub">הסבר קצר על מה שהמספרים מראים.</p>
+        <div class="eyebrow"><span class="dot"></span>Results</div>
+        <h1 class="title">Support load dropped by a third</h1>
+        <p class="sub">Tickets per 1,000 active accounts, compared with last quarter.</p>
       </div>
       <div class="grid f1 ac" style="grid-template-columns:1.4fr 1fr;gap:40px;margin-top:44px;">
         <div class="glass" style="padding:48px 52px;">
           <div class="fx col" style="gap:28px;">
-            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:24px;">עבודה ידנית (דקות)</div><div class="bartrack"><div class="barfill f-3" style="width:90%;">45 דק'</div></div></div>
-            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:24px;">עם התהליך החדש (דקות)</div><div class="bartrack"><div class="barfill f-6" style="width:20%;">2 דק'</div></div></div>
+            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:24px;">Q2</div><div class="bartrack"><div class="barfill f-3" style="width:90%;">42 tickets</div></div></div>
+            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:24px;">Q3</div><div class="bartrack"><div class="barfill f-6" style="width:60%;">28 tickets</div></div></div>
           </div>
         </div>
         <div class="inkcard fx col ac jc" style="padding:44px;text-align:center;gap:8px;">
-          <div class="bignum spec" dir="ltr">22×</div>
-          <div class="white fw7" style="font-size:26px;line-height:1.35;">מהיר יותר מקצה לקצה</div>
+          <div class="bignum spec">-33%</div>
+          <div class="white fw7" style="font-size:26px;line-height:1.35;">support tickets<br>per active account</div>
         </div>
       </div>
-      <div class="take" style="margin-top:28px;">מה עושים עם זה — <span class="hi">פעולה מומלצת</span>.</div>
+      <div class="take" style="margin-top:28px;">Fewer tickets free roughly <span class="hi">two engineer-weeks</span> per month.</div>
     </div>
 
-    <!-- SLIDE 5: steps — איך זה עובד, שלב אחר שלב -->
+    <!-- SLIDE 4: compare — How we ship, before and after -->
+    <div class="page aurora">
+      <div class="wm" role="img" aria-label="Logo"></div>
+      <div class="hd">
+        <div class="eyebrow"><span class="dot"></span>Process</div>
+        <h1 class="title">How we ship, before and after</h1>
+      </div>
+      <div class="grid f1 ac" style="grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;">
+        <div class="glass" style="padding:44px;">
+          <div class="chip" style="background:rgba(110,98,87,.14);color:var(--muted);margin-bottom:20px;">Before</div>
+          <div class="ink-t fw8" style="font-size:32px;line-height:1.2;margin-bottom:22px;">Ad-hoc deploys</div>
+          <div class="fx col" style="gap:20px;">
+            <div class="fx ac" style="gap:14px;"><span class="bullet" style="background:var(--muted);"></span><span class="muted fw6" style="font-size:25px;line-height:1.35;">Releases whenever a feature was ready</span></div>
+            <div class="fx ac" style="gap:14px;"><span class="bullet" style="background:var(--muted);"></span><span class="muted fw6" style="font-size:25px;line-height:1.35;">Manual regression testing</span></div>
+            <div class="fx ac" style="gap:14px;"><span class="bullet" style="background:var(--muted);"></span><span class="muted fw6" style="font-size:25px;line-height:1.35;">Rollbacks took hours</span></div>
+          </div>
+        </div>
+        <div class="inkcard" style="padding:44px;">
+          <div class="chip" style="background:rgba(255,255,255,.14);color:#fff;margin-bottom:20px;">After</div>
+          <div class="white fw8" style="font-size:32px;line-height:1.2;margin-bottom:22px;">Weekly release train</div>
+          <div class="fx col" style="gap:20px;">
+            <div class="fx ac" style="gap:14px;"><span class="dot" style="width:14px;height:14px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:25px;line-height:1.35;">Fixed release window every Tuesday</span></div>
+            <div class="fx ac" style="gap:14px;"><span class="dot" style="width:14px;height:14px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:25px;line-height:1.35;"><span class="white fw8">Automated</span> regression suite</span></div>
+            <div class="fx ac" style="gap:14px;"><span class="dot" style="width:14px;height:14px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:25px;line-height:1.35;">Rollback in minutes</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="take" style="margin-top:28px;">Predictability is what let other teams plan around us.</div>
+    </div>
+
+    <!-- SLIDE 5: steps — Our plan for Q4 -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd" style="margin-bottom:30px;">
-        <div class="eyebrow"><span class="dot"></span>תהליך</div>
-        <h1 class="title">איך זה עובד, שלב אחר שלב</h1>
+        <div class="eyebrow"><span class="dot"></span>Next quarter</div>
+        <h1 class="title">Our plan for Q4</h1>
       </div>
       <div class="glass f1 fx col" style="padding:44px 56px;gap:30px;justify-content:center;">
-        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c1);">1</div><div><div class="ink-t fw8" style="font-size:32px;">שלב ראשון</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
-        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c2);">2</div><div><div class="ink-t fw8" style="font-size:32px;">שלב שני</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
-        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c3);">3</div><div><div class="ink-t fw8" style="font-size:32px;">שלב שלישי</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
+        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c1);">1</div><div><div class="ink-t fw8" style="font-size:32px;">Stabilize</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">Close the ten open reliability issues before any new feature work.</div></div></div>
+        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c2);">2</div><div><div class="ink-t fw8" style="font-size:32px;">Extend</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">Bring the export API to the two remaining product lines.</div></div></div>
+        <div class="fx ac" style="gap:26px;"><div class="numchip" style="background:var(--c3);">3</div><div><div class="ink-t fw8" style="font-size:32px;">Measure</div><div class="muted fw5" style="font-size:24px;margin-top:6px;line-height:1.4;">Track time to first value weekly and publish it to the whole company.</div></div></div>
       </div>
     </div>
 
-    <!-- SLIDE 6: section — אמירה מרכזית עם  דגש  -->
+    <!-- SLIDE 6: statement — Ship  less risk , not less often -->
     <div class="page dark fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
-      <div class="fx col ac" style="gap:28px;text-align:center;max-width:1400px;">
-        <div class="eyebrow on-dark"><span class="dot"></span>חלק שני</div>
-        <h1 class="title on-dark" style="font-size:88px;">אמירה מרכזית עם <span class="spec">דגש</span></h1>
-        <p class="sub on-dark" style="text-align:center;">משפט תומך שמציג את הפרק הבא.</p>
+      <div class="fx col ac" style="gap:30px;text-align:center;max-width:1500px;">
+        <div class="eyebrow on-dark"><span class="dot"></span>Closing</div>
+        <p class="sub on-dark" style="font-size:36px;text-align:center;">The goal for Q4 is simple:</p>
+        <h1 class="title on-dark" style="font-size:84px;line-height:1.1;">Ship <span class="spec">less risk</span>,<br>not less often</h1>
         <div class="specbar" style="width:240px;height:8px;border-radius:999px;"></div>
-      </div>
-    </div>
-
-    <!-- SLIDE 7: closing — הנקודות שכדאי לזכור -->
-    <div class="page aurora fx col ac jc">
-      <div class="wm" role="img" aria-label="Logo"></div>
-      <div style="width:100%;">
-        <div class="fx col ac" style="gap:12px;text-align:center;margin-bottom:28px;">
-          <div class="eyebrow"><span class="dot"></span>לסיכום</div>
-          <h1 class="title" style="font-size:56px;">הנקודות שכדאי לזכור</h1>
-        </div>
-        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:20px;">
-          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">1</div><div class="ink-t fw8" style="font-size:24px;line-height:1.25;">נקודה ראשונה</div><div class="muted fw6" style="font-size:20px;line-height:1.45;">משפט הסבר קצר.</div></div>
-          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">2</div><div class="ink-t fw8" style="font-size:24px;line-height:1.25;">נקודה שנייה</div><div class="muted fw6" style="font-size:20px;line-height:1.45;">משפט הסבר קצר.</div></div>
-          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">3</div><div class="ink-t fw8" style="font-size:24px;line-height:1.25;">נקודה שלישית</div><div class="muted fw6" style="font-size:20px;line-height:1.45;">משפט הסבר קצר.</div></div>
-        </div>
-        
+        <p class="sub on-dark" style="font-size:24px;text-align:center;max-width:1200px;">Questions and feedback: product@example.com</p>
       </div>
     </div>
 
