@@ -1,6 +1,6 @@
 # Authoring Guidelines
 
-Rules of thumb for decks built on `template.html`.
+Rules of thumb for decks built on `skills/html-presentation/assets/template.html`.
 
 ## Structure
 

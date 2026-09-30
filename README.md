@@ -4,12 +4,16 @@
 
 You have a presentation to deliver in an hour. The design tool has used up your credits. The slide editor will not keep right-to-left text in order. This project gives you a third option: a finished, large-screen presentation template, and an AI skill that fills it from your documents — in one file, with no account, no subscription and no software to install.
 
+![Six slides from the example decks: an English quarterly review and a Hebrew right-to-left deck](docs/images/preview.jpg)
+
+*Slides from [`examples/quarterly-review`](examples/quarterly-review.html) (English) and [`examples/hebrew-example`](examples/hebrew-example.html) (Hebrew, right-to-left), each built from a short JSON content file.*
+
 ## Why this approach
 
 - **It is just a file.** One `.html` file opens in any browser, works offline and can be copied to a USB stick, emailed or hosted anywhere.
 - **It is easy to change.** Every color, the font, the logo and its position, the language and text direction, the slide count and even the skill's own rules are settings you can override — by hand, in a short configuration file, or simply by asking Claude.
 - **Right-to-left is built in.** Hebrew, Arabic and other RTL languages mirror the layout, logo slot, arrow keys and swipe direction automatically. See [`examples/hebrew-example.html`](examples/hebrew-example.html).
-- **Made for large screens.** A fixed 1920×1080 canvas scales to any display, with text sized for reading from across a room.
+- **Made for large screens.** A fixed 1920×1080 canvas scales to any display. Text is sized for reading from across a room and grows when a slide has less to say, so short slides still fill the screen.
 - **Cheap to iterate.** An assistant writes a few kilobytes of content, not a whole page of HTML, and a script assembles the deck. Fixing a slide means editing a few lines of text.
 - **Checks itself.** A built-in checklist and an automated audit catch overflow, missing images, broken navigation and PDF problems before you walk on stage.
 
@@ -19,14 +23,14 @@ This is not a one-click generator. A first draft from a good brief is usually cl
 
 ## Quick start
 
-**With an AI assistant (recommended).** Install the skill from [`skills/html-presentation/`](skills/html-presentation/SKILL.md) and ask for a presentation. Claude asks who the audience is, how many slides you need and whether to show the presenter's name, then asks for your source documents and builds the deck. Details below.
+**With an AI assistant (recommended).** [Install the skill](#install) and ask for a presentation. Claude asks who the audience is, how many slides you need and whether to show the presenter's name, then asks for your source documents and builds the deck. Details below.
 
-**From a content file.** Write the words as a small JSON file and build the HTML with `node tools/build-deck.js my-deck.json` — see [`examples/quarterly-review.json`](examples/quarterly-review.json). This is what the AI skill does, and it is the cheapest way to produce a deck.
+**From a content file.** Write the words as a small JSON file and build the HTML with `node skills/html-presentation/scripts/build-deck.js my-deck.json` — see [`examples/quarterly-review.json`](examples/quarterly-review.json). This is what the AI skill does, and it is the cheapest way to produce a deck.
 
 **By hand.**
 
 ```bash
-cp template.html my-talk.html
+cp skills/html-presentation/assets/template.html my-talk.html
 open my-talk.html        # or double-click it
 ```
 
@@ -40,20 +44,51 @@ Replace the slides inside `<div id="deck">`. Navigation, progress dots and the c
 | `F` | Toggle fullscreen |
 | Swipe | Next / previous |
 
+## Install
+
+The skill is self-contained: instructions, references, scripts and the template all live in [`skills/html-presentation/`](skills/html-presentation/SKILL.md).
+
+**Claude Code — plugin (recommended)**
+
+```bash
+/plugin marketplace add Amitro123/Presentation-skill
+/plugin install html-presentation@presentation-skill
+```
+
+Or from a local clone: `claude --plugin-dir ./plugin` to try it for one session, `claude plugin install ./plugin --scope user` to keep it.
+
+**Claude Desktop / Cowork** — download [`html-presentation.skill`](https://raw.githubusercontent.com/Amitro123/Presentation-skill/main/html-presentation.skill), then *Plugins → Install from file* (or *Settings → Skills*).
+
+**Copy the folder**
+
+```bash
+cp -r skills/html-presentation ~/.claude/skills/          # all projects
+cp -r skills/html-presentation .claude/skills/            # this project only
+```
+
+Requirements: Node 16+ to build decks. Optional: Playwright + Chromium for the audit (`npm i -D playwright`), and `pip install pillow numpy` for logo preparation.
+
+`plugin/skills/` and `html-presentation.skill` are generated from `skills/html-presentation/` by `python3 tools/package_skill.py`; never edit them directly.
+
 ## Using the AI skill
 
 ```
 skills/html-presentation/
 ├── SKILL.md                      # workflow and rules
+├── scripts/
+│   ├── build-deck.js             # content file (JSON) → finished deck
+│   ├── audit-deck.js             # automated audit + contact sheet (Playwright)
+│   └── prepare-logo.py           # any logo image → transparent PNG
+├── assets/
+│   ├── template.html             # the design system; also the by-hand starter
+│   └── template-sample.json      # source of the template's example slides
 └── references/
+    ├── content-format.md         # JSON format for build-deck.js (default build path)
     ├── design-system.md          # tokens, modes, components, known traps
-    ├── content-format.md         # JSON format for tools/build-deck.js (default build path)
-    ├── slide-templates.md        # copy-paste HTML for each slide type
+    ├── slide-templates.md        # copy-paste HTML for hand-written slides
     ├── technical-patterns.md     # pipelines, cost tables, security/architecture slides
     └── verification-checker.md   # checklist and self-repair runbook
 ```
-
-Install it the way your tool loads skills: for Claude Code, copy the folder to `.claude/skills/` (project) or `~/.claude/skills/` (global); for Claude.ai or Cowork, add it under *Settings → Skills*.
 
 ### How a session goes
 
@@ -63,7 +98,7 @@ Install it the way your tool loads skills: for Claude Code, copy the folder to `
    - how many slides you need;
    - whether the presenter's name should appear on the cover, and what it is.
 3. You answer, then attach whatever source material you like — documents, PDFs, notes, data, links, images — or state that there is none.
-4. Claude writes a short content file, builds the deck with `tools/build-deck.js`, fitted to the audience and slide count, and runs its checklist.
+4. Claude writes a short content file, builds the deck with `build-deck.js`, audits it, looks at one contact-sheet image of all slides, and fixes what it finds.
 5. You refine it in plain language.
 
 Questions already answered in your first message, or set in `assets/brand.md` (`audience`, `author`, `slides`), are not asked again.
@@ -86,7 +121,7 @@ Nothing is fixed. Colors, font, logo, logo position, language, slide counts, den
 
 **Write a short configuration.** Copy [`assets/brand.example.md`](assets/brand.example.md) to `assets/brand.md` and set only what you care about: colors, font, `logo_position`, `slides`, `max_bullets`, `emoji`, which reference files to use, which checks to skip. Anything omitted keeps its default.
 
-**Edit by hand.** Everything lives in the `:root` block of `template.html`:
+**Edit by hand.** Everything lives in the `:root` block of the deck (or `meta.tokens` in a content file):
 
 ```css
 --c1 … --c6, --ink, --bg, --font      /* theme */
@@ -118,29 +153,28 @@ Open the deck in Chrome → `Ctrl/Cmd + P` → Destination *Save as PDF*, Layout
 
 ## Audit your deck
 
-`tools/audit-deck.js` opens a deck in Chromium and checks what a script can check: JavaScript errors, broken images and missing `alt`, keyboard navigation, reduced-motion and print rules, offline safety, RTL term isolation, text size for large screens, overflow on every slide at several screen sizes, and that PDF export gives one page per slide.
+`scripts/audit-deck.js` opens a deck in Chromium and checks what a script can check: JavaScript errors, broken images and missing `alt`, keyboard navigation, reduced-motion and print rules, offline safety, RTL term isolation, text size for large screens, overflow on every slide at several screen sizes, large empty areas, and that PDF export gives one page per slide. `--sheet=sheet.png` also writes one image with every slide, for a quick visual check.
 
 ```bash
 npm i -D playwright
-node tools/audit-deck.js template.html examples/hebrew-example.html
+node skills/html-presentation/scripts/audit-deck.js examples/hebrew-example.html --sheet=sheet.png
 ```
 
-It also works on single-file decks not built from this template, as long as slides are `.page` or `.slide` elements and the visible one has `.active`. It exits with code 1 on any failure, so it can run in CI. CI in this repository runs [`html-validate`](https://html-validate.org) on every HTML file; locally, use `npx html-validate "*.html"`.
+It also works on single-file decks not built from this template, as long as slides are `.page` or `.slide` elements and the visible one has `.active`. It exits with code 1 on any failure, so it can run in CI. CI in this repository runs [`html-validate`](https://html-validate.org), checks that the examples match their content files, and that the packaged skill and plugin are up to date.
 
 ## Project layout
 
 ```
 .
-├── template.html          # starter deck — copy this
-├── examples/              # quarterly-review (LTR) and hebrew-example (RTL): content .json + built .html
-├── assets/                # your logo, brand.md, references/, images (see assets/README.md)
-├── docs/                  # design system + authoring guidelines
-├── tools/
-│   ├── build-deck.js      # content file (JSON) → finished deck
-│   ├── prepare-logo.py    # any logo image → transparent PNG
-│   └── audit-deck.js      # automated deck audit (Playwright)
-├── skills/html-presentation/
-└── .github/workflows/     # HTML validation on push / PR
+├── skills/html-presentation/   # the skill — single source of truth (see above)
+├── plugin/                     # Claude Code plugin, generated (skills/) + plugin.json
+├── .claude-plugin/             # marketplace.json, so the repo can be added as a plugin marketplace
+├── html-presentation.skill     # zip for Claude Desktop / Cowork, generated
+├── examples/                   # quarterly-review (LTR) and hebrew-example (RTL): content .json + built .html
+├── assets/                     # your logo, brand.md, references/, images (see assets/README.md)
+├── docs/                       # design system, authoring guidelines, README images
+├── tools/package_skill.py      # builds plugin/ and the .skill file
+└── .github/workflows/          # validation on push / PR, release on tag
 ```
 
 ## License

@@ -3,9 +3,10 @@
  * Deck audit — renders one or more HTML decks in Chromium and reports objective problems.
  *
  *   npm i -D playwright            (once; uses your installed Chromium or `npx playwright install chromium`)
- *   node tools/audit-deck.js template.html examples/hebrew-example.html
- *   node tools/audit-deck.js my-deck.html --slide-selector=.slide --chromium=/path/to/chromium
- *   node tools/audit-deck.js my-deck.html --sheet=sheet.png     # also write one contact-sheet image of all slides
+ *   node scripts/audit-deck.js template.html examples/hebrew-example.html
+ *   node scripts/audit-deck.js my-deck.html --slide-selector=.slide --chromium=/path/to/chromium
+ *   node scripts/audit-deck.js my-deck.html --sheet=sheet.png     # also write one contact-sheet image of all slides
+ *   node scripts/audit-deck.js my-deck.html --max-gap=260         # tolerate larger empty bands (default 200px)
  *
  * Works on decks built from template.html (`.page`) and on other single-file decks
  * that mark slides with `.slide` and the visible one with `.active`.
@@ -18,7 +19,7 @@ try { ({ chromium } = require('playwright')); } catch { console.error('playwrigh
 const args = process.argv.slice(2);
 const opt = Object.fromEntries(args.filter(a => a.startsWith('--')).map(a => a.slice(2).split('=')));
 const files = args.filter(a => !a.startsWith('--'));
-if (!files.length) { console.error('usage: node tools/audit-deck.js <deck.html> [...] [--slide-selector=.page] [--chromium=path] [--views=1920x1080,1366x768]'); process.exit(2); }
+if (!files.length) { console.error('usage: node scripts/audit-deck.js <deck.html> [...] [--slide-selector=.page] [--chromium=path] [--views=1920x1080,1366x768]'); process.exit(2); }
 const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x').map(Number));
 
 (async () => {
@@ -116,6 +117,31 @@ const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x
       return [...out];
     }, info.sel);
     add('A14', 'Text is at least 20px on the 1920px canvas (readable from across a room)', small.length === 0, small.length ? `found ${small.join(', ')}` : '');
+
+    // empty space: largest vertical gap between pieces of content on a slide
+    const GAP = Number(opt['max-gap'] || 200);
+    const gaps = [];
+    for (let i = 0; i < info.n; i++) {
+      await pg.evaluate(([sel, i]) => { const s = [...document.querySelectorAll(sel)]; s.forEach(x => x.classList.remove('active')); s[i].classList.add('active'); }, [info.sel, i]);
+      await pg.waitForTimeout(100);
+      const g = await pg.evaluate(([sel, i]) => {
+        const s = document.querySelectorAll(sel)[i], sr = s.getBoundingClientRect(), iv = [];
+        s.querySelectorAll('*').forEach(e => {
+          if (e.closest('.nav-bar,.nav-controls,.wm')) return;
+          const own = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+          const visual = e.matches('img,svg,video,canvas,.numchip,.barfill,.bartrack,.specbar,.bignum');
+          if (!own && !visual) return;
+          const r = e.getBoundingClientRect(); if (!r.height) return;
+          iv.push([r.top - sr.top, r.bottom - sr.top]);
+        });
+        iv.sort((a, b) => a[0] - b[0]);
+        let worst = 0, end = iv.length ? iv[0][1] : 0;
+        for (const [a, b] of iv.slice(1)) { if (a > end) worst = Math.max(worst, a - end); end = Math.max(end, b); }
+        return Math.round(worst);
+      }, [info.sel, i]);
+      if (g > GAP) gaps.push(`${i + 1} (${g}px)`);
+    }
+    add('A15', `No empty band taller than ${GAP}px between content on a slide`, gaps.length === 0, gaps.join(', '));
 
     // print
     await pg.setViewportSize({ width: VIEWS[0][0], height: VIEWS[0][1] });

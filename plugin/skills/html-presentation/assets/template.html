@@ -1,12 +1,30 @@
 <!DOCTYPE html>
-<!-- Built with the html-presentation skill (scripts/build-deck.js) from a content file. -->
-<html lang="he" dir="rtl"><head>
+<!--
+  ============================================================================
+  HTML PRESENTATION — STARTER TEMPLATE
+  ============================================================================
+  Copy this file, rename it (e.g. my-talk.html) and replace the example slides
+  inside <div id="deck"> with your own. Everything else — theme tokens, slide
+  navigation, responsive scaling, keyboard/swipe controls and print-to-PDF
+  rules — is already wired up.
+
+  THEME:   change the colors once, in the :root block below. Nothing else in the
+           file hardcodes a color.
+  LOGO:    set --logo (and optionally --logo-dark) in :root; choose where it sits
+           with data-logo on #deck (top-end, top-start, top-center, bottom-*, none).
+  RTL:     for Hebrew/Arabic set <html dir="rtl" lang="he"> and swap the font.
+           Wrap embedded Latin terms in <span dir="ltr">…</span>.
+  SLIDES:  each slide is one <div class="page …">. Navigation, dots and the
+           counter update automatically.
+  ============================================================================
+-->
+<html lang="en" dir="ltr"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מצגת לדוגמה בעברית</title>
+<title>Presentation Title</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 @page { size: 1920px 1080px; margin: 0; }
@@ -30,11 +48,11 @@
   --on-dark-2: rgba(255,255,255,.82);
   --highlight: var(--c4);
 
-  --font: 'Heebo', 'Arial Hebrew', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
 
   /* ---- Logo: one place to change it ---- */
-  --logo: url("../assets/logo-placeholder.svg");  /* placeholder; replace with url("assets/logo.svg") */   /* logo for light slides */
-  --logo-dark: url("../assets/logo-placeholder-light.svg");   /* light variant used on .dark slides (defaults to --logo if you delete this line) */
+  --logo: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTYiIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iWW91ciBsb2dvIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2MzY2RjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUM0ODk5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB4PSIwIiB5PSI0IiB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHJ4PSIxNCIgZmlsbD0idXJsKCNnKSIvPgogIDx0ZXh0IHg9IjYwIiB5PSIzNiIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzBGMTcyQSI+WW91ciBMb2dvPC90ZXh0Pgo8L3N2Zz4K");  /* placeholder; replace with url("assets/logo.svg") */   /* logo for light slides */
+  --logo-dark: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTYiIHdpZHRoPSIyMDAiIGhlaWdodD0iNTYiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iWW91ciBsb2dvIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2MzY2RjEiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUM0ODk5Ii8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCB4PSIwIiB5PSI0IiB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHJ4PSIxNCIgZmlsbD0idXJsKCNnKSIvPgogIDx0ZXh0IHg9IjYwIiB5PSIzNiIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iI0ZGRkZGRiI+WW91ciBMb2dvPC90ZXh0Pgo8L3N2Zz4K");   /* light variant used on .dark slides (defaults to --logo if you delete this line) */
   --logo-w: 200px;                              /* logo box size; the image is fitted inside (contain) */
   --logo-h: 56px;
   --logo-offset-x: 104px;                       /* distance from the side edge */
@@ -190,124 +208,125 @@ html, body {
 <body>
   <div id="deck" data-logo="top-end">
 
-    <!-- SLIDE 1: cover — כותרת ראשית עם  ביטוי מודגש  -->
+    <!-- SLIDE 1: cover — Main title with a  highlighted phrase  -->
     <div class="page aurora fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="fx col ac" style="gap:34px;text-align:center;max-width:1500px;">
-        <div class="eyebrow"><span class="dot"></span>הדרכה · <span dir="ltr">AI Workshop</span></div>
-        <h1 class="title" style="font-size:100px;line-height:1.04;">כותרת ראשית עם<br><span class="spec">ביטוי מודגש</span></h1>
-        <p class="sub" style="font-size:33px;text-align:center;max-width:1180px;">משפט פתיחה אחד שמסביר על מה המצגת, בשפה פשוטה וברורה.</p>
+        <div class="eyebrow"><span class="dot"></span>Category · Short subtitle</div>
+        <h1 class="title" style="font-size:100px;line-height:1.04;">Main title with a<br><span class="spec">highlighted phrase</span></h1>
+        <p class="sub" style="font-size:33px;text-align:center;max-width:1180px;">One opening sentence that says what this deck is about, in plain language.</p>
         <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
-        <div class="byline">שם המציג · חודש שנה</div>
       </div>
     </div>
 
-    <!-- SLIDE 2: bullets — כותרת השקופית -->
+    <!-- SLIDE 2: bullets — Slide title goes here -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>סקירה</div>
-        <h1 class="title">כותרת השקופית</h1>
-        <p class="sub">משפט פתיחה שממסגר את הנקודות שלהלן, כולל מונח כמו <span dir="ltr">Claude Sonnet</span> בתוך טקסט עברי.</p>
+        <div class="eyebrow"><span class="dot"></span>Overview</div>
+        <h1 class="title">Slide title goes here</h1>
+        <p class="sub">A lead-in sentence that frames the points below.</p>
       </div>
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="glass fx col" style="flex:1;padding:40px 64px;justify-content:space-evenly;">
-          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c1);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">נקודה ראשונה — ברורה וממוקדת, שורה וחצי לכל היותר.</span></div>
-          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c3);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">נקודה שנייה עם מונח טכני: <span dir="ltr">RAG Pipeline</span>, ומשפט שממשיך אחריו.</span></div>
-          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c6);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">נקודה שלישית עם מספר ויחידה: $3.00 / <span dir="ltr">1M tokens</span>.</span></div>
+          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c1);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">First key point — clear and focused, one line and a half at most.</span></div>
+          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c3);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">Second key point, covering a different angle of the same idea.</span></div>
+          <div class="fx" style="gap:22px;align-items:baseline;"><span class="bullet" style="background:var(--c6);width:17px;height:17px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:40px;line-height:1.35;">Third key point with the concrete benefit for the audience.</span></div>
         </div>
       </div>
-      <div class="take" style="margin-top:32px;font-size:30px;">מסקנה — <span class="hi">הדבר האחד שכדאי לזכור</span>.</div>
+      <div class="take" style="margin-top:32px;font-size:30px;">Takeaway line — <span class="hi">the one thing to remember</span>.</div>
     </div>
 
-    <!-- SLIDE 3: compare — לפני ואחרי -->
+    <!-- SLIDE 3: compare — Before vs. after -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>השוואה</div>
-        <h1 class="title">לפני ואחרי</h1>
+        <div class="eyebrow"><span class="dot"></span>Comparison</div>
+        <h1 class="title">Before vs. after</h1>
       </div>
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="grid" style="flex:1;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch;">
-          <div class="glass fx col" style="padding:52px;gap:32px;justify-content:center;">
-            <div class="chip" style="background:rgba(100,116,139,.14);color:var(--muted);font-size:22px;">אפשרות א'</div>
-            <div class="ink-t fw8" style="font-size:44px;line-height:1.2;">הגישה הנוכחית</div>
-            <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:36px;line-height:1.35;">מגבלה ראשונה</span></div>
-            <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:36px;line-height:1.35;">מגבלה שנייה</span></div>
+          <div class="glass fx col" style="padding:52px;gap:31px;justify-content:center;">
+            <div class="chip" style="background:rgba(100,116,139,.14);color:var(--muted);font-size:22px;">Option A</div>
+            <div class="ink-t fw8" style="font-size:42px;line-height:1.2;">Current approach</div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:34px;line-height:1.35;">First limitation</span></div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:34px;line-height:1.35;">Second limitation</span></div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:34px;line-height:1.35;">Third limitation</span></div>
           </div>
-          <div class="inkcard fx col" style="padding:52px;gap:32px;justify-content:center;">
-            <div class="chip" style="background:rgba(255,255,255,.14);color:#fff;font-size:22px;">אפשרות ב'</div>
-            <div class="white fw8" style="font-size:44px;line-height:1.2;">הגישה המומלצת</div>
-            <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:36px;line-height:1.35;">יתרון ראשון</span></div>
-            <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:36px;line-height:1.35;">יתרון שני <span class="white fw8">מודגש</span></span></div>
+          <div class="inkcard fx col" style="padding:52px;gap:31px;justify-content:center;">
+            <div class="chip" style="background:rgba(255,255,255,.14);color:#fff;font-size:22px;">Option B</div>
+            <div class="white fw8" style="font-size:42px;line-height:1.2;">Recommended approach</div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:34px;line-height:1.35;">First advantage</span></div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:34px;line-height:1.35;">Second advantage <span class="white fw8">emphasized</span></span></div>
+            <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:34px;line-height:1.35;">Third advantage</span></div>
           </div>
         </div>
       </div>
-      <div class="take" style="margin-top:32px;font-size:30px;">שורה תחתונה — <span class="hi">ההחלטה המומלצת</span>.</div>
+      <div class="take" style="margin-top:32px;font-size:30px;">Conclusion — <span class="hi">highlight the decision</span> in the accent color.</div>
     </div>
 
-    <!-- SLIDE 4: stats — כותרת עם מספר מרכזי -->
+    <!-- SLIDE 4: stats — Headline with a key number -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>נתונים</div>
-        <h1 class="title">כותרת עם מספר מרכזי</h1>
-        <p class="sub">הסבר קצר על מה שהמספרים מראים.</p>
+        <div class="eyebrow"><span class="dot"></span>Data</div>
+        <h1 class="title">Headline with a key number</h1>
+        <p class="sub">Explain what the numbers show. Keep the chart simple and readable.</p>
       </div>
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="grid" style="flex:1;grid-template-columns:1.4fr 1fr;gap:40px;align-items:stretch;">
           <div class="glass fx col" style="padding:56px 60px;justify-content:space-evenly;">
-            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עבודה ידנית (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-3" style="width:90%;font-size:26px;padding-inline:24px;">45 דק'</div></div></div>
-            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עם התהליך החדש (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-6" style="width:20%;font-size:26px;padding-inline:24px;">2 דק'</div></div></div>
+            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">Option A</div><div class="bartrack" style="height:64px;"><div class="barfill f-1" style="width:30%;font-size:26px;padding-inline:24px;">Low</div></div></div>
+            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">Option B</div><div class="bartrack" style="height:64px;"><div class="barfill f-3" style="width:92%;font-size:26px;padding-inline:24px;">Much higher</div></div></div>
           </div>
           <div class="inkcard fx col ac jc" style="padding:52px;text-align:center;gap:14px;">
-            <div class="bignum spec" style="font-size:180px;" dir="ltr">22×</div>
-            <div class="white fw7" style="font-size:32px;line-height:1.35;">מהיר יותר מקצה לקצה</div>
+            <div class="bignum spec" style="font-size:180px;">20×</div>
+            <div class="white fw7" style="font-size:32px;line-height:1.35;">Short description<br>of the number</div>
           </div>
         </div>
       </div>
-      <div class="take" style="margin-top:32px;font-size:30px;">מה עושים עם זה — <span class="hi">פעולה מומלצת</span>.</div>
+      <div class="take" style="margin-top:32px;font-size:30px;">What to do with this — <span class="hi">recommended action</span>.</div>
     </div>
 
-    <!-- SLIDE 5: steps — איך זה עובד, שלב אחר שלב -->
+    <!-- SLIDE 5: steps — How it works, step by step -->
     <div class="page aurora">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>תהליך</div>
-        <h1 class="title">איך זה עובד, שלב אחר שלב</h1>
+        <div class="eyebrow"><span class="dot"></span>Process</div>
+        <h1 class="title">How it works, step by step</h1>
       </div>
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="glass fx col" style="flex:1;padding:40px 60px;gap:40px;justify-content:space-evenly;">
-          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c1);width:80px;height:80px;font-size:36px;">1</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">שלב ראשון</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
-          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c2);width:80px;height:80px;font-size:36px;">2</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">שלב שני</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
-          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c3);width:80px;height:80px;font-size:36px;">3</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">שלב שלישי</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">משפט אחד שמתאר מה קורה.</div></div></div>
+          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c1);width:80px;height:80px;font-size:36px;">1</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">First step</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">One sentence describing what happens.</div></div></div>
+          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c2);width:80px;height:80px;font-size:36px;">2</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">Second step</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">One sentence describing what happens.</div></div></div>
+          <div class="fx ac" style="gap:30px;"><div class="numchip" style="background:var(--c3);width:80px;height:80px;font-size:36px;">3</div><div><div class="ink-t fw8" style="font-size:42px;line-height:1.2;">Third step</div><div class="muted fw5" style="font-size:31px;margin-top:8px;line-height:1.4;">One sentence describing what happens.</div></div></div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 6: section — אמירה מרכזית עם  דגש  -->
+    <!-- SLIDE 6: section — A bold statement with an  accent  -->
     <div class="page dark fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="fx col ac" style="gap:28px;text-align:center;max-width:1400px;">
-        <div class="eyebrow on-dark"><span class="dot"></span>חלק שני</div>
-        <h1 class="title on-dark" style="font-size:88px;">אמירה מרכזית עם <span class="spec">דגש</span></h1>
-        <p class="sub on-dark" style="text-align:center;">משפט תומך שמציג את הפרק הבא.</p>
+        <div class="eyebrow on-dark"><span class="dot"></span>Part two</div>
+        <h1 class="title on-dark" style="font-size:88px;">A bold statement with an <span class="spec">accent</span></h1>
+        <p class="sub on-dark" style="text-align:center;">A supporting sentence introducing the next section.</p>
         <div class="specbar" style="width:240px;height:8px;border-radius:999px;"></div>
       </div>
     </div>
 
-    <!-- SLIDE 7: closing — הנקודות שכדאי לזכור -->
+    <!-- SLIDE 7: closing — Key points to remember -->
     <div class="page aurora fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div style="width:100%;">
         <div class="fx col ac" style="gap:16px;text-align:center;margin-bottom:44px;">
-          <div class="eyebrow"><span class="dot"></span>לסיכום</div>
-          <h1 class="title" style="font-size:72px;">הנקודות שכדאי לזכור</h1>
+          <div class="eyebrow"><span class="dot"></span>Summary</div>
+          <h1 class="title" style="font-size:72px;">Key points to remember</h1>
         </div>
         <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:28px;">
-          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">1</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">נקודה ראשונה</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">משפט הסבר קצר.</div></div>
-          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">2</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">נקודה שנייה</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">משפט הסבר קצר.</div></div>
-          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">3</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">נקודה שלישית</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">משפט הסבר קצר.</div></div>
+          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">1</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">First point</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">A short supporting sentence.</div></div>
+          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">2</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">Second point</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">A short supporting sentence.</div></div>
+          <div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">3</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">Third point</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">A short supporting sentence.</div></div>
         </div>
         
       </div>

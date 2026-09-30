@@ -1,0 +1,16 @@
+{
+  "name": "presentation-skill",
+  "owner": {
+    "name": "Amitro123"
+  },
+  "metadata": {
+    "description": "HTML presentation skill: large-screen, RTL-aware slide decks as single HTML files."
+  },
+  "plugins": [
+    {
+      "name": "html-presentation",
+      "source": "./plugin",
+      "description": "Build large-screen slide decks as single HTML files from your documents. RTL-aware, brandable, prints to PDF."
+    }
+  ]
+}

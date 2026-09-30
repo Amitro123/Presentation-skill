@@ -1,6 +1,6 @@
 # Design System
 
-The authoritative reference for `template.html`. The same content, condensed for AI use, is in [`skills/html-presentation/references/design-system.md`](../skills/html-presentation/references/design-system.md).
+The authoritative reference for `skills/html-presentation/assets/template.html`. The same content, condensed for AI use, is in [`skills/html-presentation/references/design-system.md`](../skills/html-presentation/references/design-system.md).
 
 ## Theme tokens
 

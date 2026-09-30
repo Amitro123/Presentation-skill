@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Turn a logo image into a transparent PNG cropped to the mark.
 
-    python3 tools/prepare-logo.py input.jpg assets/logo.png
-    python3 tools/prepare-logo.py input.jpg assets/logo.png --crop 770,500,1240,1215
-    python3 tools/prepare-logo.py input.png assets/logo.png --background light
+    python3 scripts/prepare-logo.py input.jpg assets/logo.png
+    python3 scripts/prepare-logo.py input.jpg assets/logo.png --crop 770,500,1240,1215
+    python3 scripts/prepare-logo.py input.png assets/logo.png --background light
 
 Needs: pip install pillow numpy
 

@@ -7,7 +7,7 @@ Copy this file to `assets/brand.md` and edit. Every key is optional; anything yo
 lang: en            # e.g. he, ar, fr
 dir: ltr            # ltr | rtl
 
-# Theme (overrides the :root tokens in template.html)
+# Theme (overrides the :root tokens of the template)
 colors:
   c1: "#6366F1"
   c2: "#8B5CF6"

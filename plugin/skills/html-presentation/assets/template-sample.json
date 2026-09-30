@@ -1,0 +1,21 @@
+{
+  "meta": { "logoPosition": "top-end" },
+  "slides": [
+    { "type": "cover", "eyebrow": "Category · Short subtitle", "title": "Main title with a\n*highlighted phrase*", "subtitle": "One opening sentence that says what this deck is about, in plain language." },
+    { "type": "bullets", "eyebrow": "Overview", "title": "Slide title goes here", "subtitle": "A lead-in sentence that frames the points below.",
+      "items": ["First key point — clear and focused, one line and a half at most.", "Second key point, covering a different angle of the same idea.", "Third key point with the concrete benefit for the audience."],
+      "takeaway": "Takeaway line — *the one thing to remember*." },
+    { "type": "compare", "eyebrow": "Comparison", "title": "Before vs. after",
+      "left": { "label": "Option A", "title": "Current approach", "items": ["First limitation", "Second limitation", "Third limitation"] },
+      "right": { "label": "Option B", "title": "Recommended approach", "items": ["First advantage", "Second advantage *emphasized*", "Third advantage"] },
+      "takeaway": "Conclusion — *highlight the decision* in the accent color." },
+    { "type": "stats", "eyebrow": "Data", "title": "Headline with a key number", "subtitle": "Explain what the numbers show. Keep the chart simple and readable.",
+      "bars": [ { "label": "Option A", "value": 30, "text": "Low", "color": 1 }, { "label": "Option B", "value": 92, "text": "Much higher", "color": 3 } ],
+      "big": { "value": "20×", "caption": "Short description\nof the number" }, "takeaway": "What to do with this — *recommended action*." },
+    { "type": "steps", "eyebrow": "Process", "title": "How it works, step by step",
+      "steps": [ { "title": "First step", "text": "One sentence describing what happens." }, { "title": "Second step", "text": "One sentence describing what happens." }, { "title": "Third step", "text": "One sentence describing what happens." } ] },
+    { "type": "section", "eyebrow": "Part two", "title": "A bold statement with an *accent*", "subtitle": "A supporting sentence introducing the next section." },
+    { "type": "closing", "eyebrow": "Summary", "title": "Key points to remember",
+      "points": [ { "title": "First point", "text": "A short supporting sentence." }, { "title": "Second point", "text": "A short supporting sentence." }, { "title": "Third point", "text": "A short supporting sentence." } ] }
+  ]
+}

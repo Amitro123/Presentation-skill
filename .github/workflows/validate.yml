@@ -1,4 +1,4 @@
-name: Validate presentations
+name: Validate
 
 on:
   push:
@@ -14,4 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate HTML
-        run: npx --yes html-validate@9 "*.html"
+        run: npx --yes html-validate@9 "skills/html-presentation/assets/*.html" "examples/*.html"
+      - name: Examples are up to date with their content files
+        run: |
+          npm run -s build:examples
+          git diff --exit-code -- examples/ || { echo "::error::examples/*.html are stale — run npm run build:examples"; exit 1; }
+      - name: Packaged skill and plugin are up to date
+        run: python3 tools/package_skill.py --check
