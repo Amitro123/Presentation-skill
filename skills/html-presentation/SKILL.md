@@ -26,6 +26,18 @@ Read only what the task needs:
 
 ## Workflow
 
+### 0. Adapt to brand assets (first run, or when `assets/` changes)
+
+Check `assets/` for anything beyond `logo-placeholder.svg` and `README.md`. If the user added brand material:
+
+1. Read it: logos, palette or style screenshots, brand guide PDFs, fonts, and `assets/brand.md` if present. Treat `brand.md` as constraints (forbidden colors, tone, language).
+2. Derive the theme: pick `--c1`…`--c6` from the brand palette (accent hues first), `--ink`/`--ink-2` from the darkest brand color, `--bg`/`--bg-2` from the lightest, `--font` from the named font. Keep text/background contrast high.
+3. Edit only the `:root` block in `template.html`, then mirror the new values in `references/design-system.md` and, if they appear, `docs/design-system.md`.
+4. Point every `.wm` logo at the user's file. For `dark` slides use a light logo variant if provided, else keep the `filter:brightness(0) invert(1)` trick for single-color marks.
+5. Render the template, look at a light and a dark slide, fix contrast problems, and report which tokens changed and why.
+
+Skip this step if `assets/` holds only the placeholder.
+
 ### 1. Plan the narrative (Doer)
 
 1. Read the brief, PDF or notes. Identify audience, goal and the one takeaway.

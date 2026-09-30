@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!-- Hebrew (RTL) example built from template.html: only lang/dir, the font and the slides differ. -->
+<html lang="he" dir="rtl"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מצגת לדוגמה בעברית</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+@page { size: 1920px 1080px; margin: 0; }
+:root {
+  /* ---- Theme tokens: edit these to re-skin the whole deck ---- */
+  --c1: #6366F1;   /* indigo  */
+  --c2: #8B5CF6;   /* violet  */
+  --c3: #EC4899;   /* pink    */
+  --c4: #F59E0B;   /* amber   */
+  --c5: #06B6D4;   /* cyan    */
+  --c6: #10B981;   /* emerald */
+  --accent: linear-gradient(135deg, var(--c1) 0%, var(--c2) 40%, var(--c3) 75%, var(--c4) 100%);
+
+  --ink: #0F172A;
+  --ink-2: #1E293B;
+  --muted: #64748B;
+  --bg: #F8FAFC;
+  --bg-2: #EEF2F7;
+  --on-dark: #FFFFFF;
+  --on-dark-2: rgba(255,255,255,.82);
+  --highlight: var(--c4);
+
+  --font: 'Heebo', 'Arial Hebrew', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+html, body {
+  margin: 0; padding: 0; overflow: hidden;
+  width: 100vw; height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% -10%, var(--ink-2) 0%, var(--ink) 55%);
+  font-family: var(--font);
+}
+
+/* Fixed 1920x1080 canvas, scaled to fit the viewport by JS */
+#deck {
+  position: absolute; top: 50%; left: 50%;
+  width: 1920px; height: 1080px;
+  transform-origin: center center;
+  overflow: hidden; background: var(--bg);
+  box-shadow: 0 25px 60px rgba(0,0,0,.4);
+}
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 1920px; height: 1080px; overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 74px 104px 120px; /* bottom room for the nav bar */
+  text-align: start;
+  opacity: 0; visibility: hidden; transform: scale(.96); z-index: 1;
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1), visibility .6s;
+}
+.page.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 2; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+.page.active .hd, .page.active .grid, .page.active .take, .page.active .wm { animation: fadeInUp .8s cubic-bezier(.25,1,.5,1) both; }
+.page.active .hd { animation-delay: .1s; }
+.page.active .grid { animation-delay: .2s; }
+.page.active .take { animation-delay: .3s; }
+
+/* ---- Floating navigation (frosted glass) ---- */
+.nav-bar {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 20px; padding: 12px 24px;
+  background: rgba(255,255,255,.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.6); border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(15,23,42,.10); z-index: 1000;
+  direction: ltr; /* controls stay left-to-right even in an RTL deck */
+}
+.nav-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(15,23,42,.1); background: #fff; color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all .2s ease; font-size: 18px;
+}
+.nav-btn:hover { background: var(--ink); color: #fff; transform: scale(1.05); }
+.nav-btn:disabled { opacity: .3; cursor: not-allowed; transform: none; }
+.nav-dots { display: flex; gap: 8px; align-items: center; }
+.nav-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(15,23,42,.15); cursor: pointer; transition: all .3s ease; }
+.nav-dot.active { background: var(--accent); width: 24px; border-radius: 5px; }
+.nav-counter { font-size: 16px; font-weight: 700; color: var(--ink); min-width: 60px; text-align: center; }
+
+/* ---- The three visual modes ---- */
+/* Aurora Light — readable, informational slides (default) */
+.aurora {
+  background:
+    radial-gradient(1200px 820px at 10% 6%,  color-mix(in srgb, var(--c3) 14%, transparent), transparent 58%),
+    radial-gradient(1150px 900px at 92% 10%, color-mix(in srgb, var(--c4) 18%, transparent), transparent 58%),
+    radial-gradient(1250px 950px at 84% 94%, color-mix(in srgb, var(--c5) 20%, transparent), transparent 60%),
+    radial-gradient(1150px 900px at 12% 96%, color-mix(in srgb, var(--c2) 16%, transparent), transparent 60%),
+    radial-gradient(900px 720px at 50% 52%,  color-mix(in srgb, var(--c6) 9%,  transparent), transparent 64%),
+    linear-gradient(160deg, var(--bg), var(--bg-2));
+}
+/* Dark Glow — covers, dividers, dramatic statements */
+.dark {
+  background:
+    radial-gradient(1200px 900px at 82% 10%, color-mix(in srgb, var(--c5) 30%, transparent), transparent 55%),
+    radial-gradient(1100px 900px at 12% 92%, color-mix(in srgb, var(--c2) 32%, transparent), transparent 58%),
+    radial-gradient(1000px 800px at 50% 50%, color-mix(in srgb, var(--c1) 20%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--ink), var(--ink-2));
+}
+/* Clean Bordered — data-heavy slides; wrap content in .accent-border */
+.clean-bordered { background: #fff; }
+.accent-border { background: var(--accent); padding: 3px; border-radius: 24px; overflow: hidden; }
+
+/* ---- Surfaces & helpers ---- */
+.glass { background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.78); border-radius: 20px; box-shadow: 0 16px 46px rgba(15,23,42,.10); }
+.inkcard { background: linear-gradient(150deg, var(--ink), var(--ink-2)); color: var(--on-dark); border-radius: 20px; box-shadow: 0 18px 48px rgba(15,23,42,.30); }
+.spec { background: var(--accent); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; } /* gradient text */
+.specbar { background: var(--accent); }                                                                                           /* gradient fill */
+.ink-t { color: var(--ink); } .muted { color: var(--muted); } .white { color: var(--on-dark); } .white-2 { color: var(--on-dark-2); }
+.eyebrow { display: inline-flex; align-items: center; gap: .55em; padding: .5em 1.15em; border-radius: 999px; background: rgba(255,255,255,.62); border: 1px solid rgba(255,255,255,.85); color: var(--ink); font-weight: 700; font-size: 21px; width: fit-content; }
+.eyebrow.on-dark { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.28); color: var(--on-dark); }
+.dot { width: .62em; height: .62em; border-radius: 50%; background: var(--accent); display: inline-block; }
+.title { font-size: 70px; font-weight: 900; line-height: 1.06; color: var(--ink); letter-spacing: -.015em; margin: 0; }
+.title.on-dark { color: var(--on-dark); }
+.sub { font-size: 29px; font-weight: 500; line-height: 1.42; color: var(--muted); max-width: 1240px; margin: 0; }
+.sub.on-dark { color: var(--on-dark-2); }
+.hd { display: flex; flex-direction: column; gap: 20px; }
+.take { border-radius: 16px; padding: 22px 34px; font-size: 27px; font-weight: 700; line-height: 1.32; background: color-mix(in srgb, var(--ink) 94%, transparent); color: var(--on-dark); }
+.take .hi { color: var(--highlight); }
+
+/* Logo slot — keep on every slide, or delete the blocks if you have no logo */
+.wm { position: absolute; top: 52px; right: 104px; display: flex; align-items: center; z-index: 100; }
+[dir="rtl"] .wm { right: auto; left: 104px; }
+
+/* Content helpers */
+.bartrack { flex: 1; height: 46px; border-radius: 999px; background: rgba(15,23,42,.07); overflow: hidden; display: flex; }
+.barfill { height: 100%; border-radius: 999px; display: flex; align-items: center; padding-inline: 18px; color: #fff; font-weight: 800; font-size: 20px; min-width: 64px; }
+.f-1 { background: var(--c1); } .f-2 { background: var(--c2); } .f-3 { background: var(--c3); }
+.f-4 { background: var(--c4); } .f-5 { background: var(--c5); } .f-6 { background: var(--c6); }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; border-radius: 999px; font-weight: 800; font-size: 20px; }
+.bignum { font-size: 150px; font-weight: 900; line-height: .9; letter-spacing: -.03em; }
+.numchip { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; color: #fff; flex-shrink: 0; }
+.bullet { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.fx { display: flex; } .col { flex-direction: column; } .ac { align-items: center; } .jc { justify-content: center; } .jb { justify-content: space-between; } .f1 { flex: 1; } .wrap { flex-wrap: wrap; } .grid { display: grid; }
+.fw5 { font-weight: 500; } .fw6 { font-weight: 600; } .fw7 { font-weight: 700; } .fw8 { font-weight: 800; }
+
+/* Print-to-PDF: one landscape 1920x1080 page per slide, nav hidden */
+@media print {
+  html, body { background: #fff; width: auto; height: auto; overflow: visible; display: block; }
+  #deck { position: static; transform: none !important; width: auto; height: auto; box-shadow: none; overflow: visible; }
+  .page { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; display: flex !important; animation: none !important; }
+  .page * { animation: none !important; }
+  .nav-bar { display: none !important; }
+}
+</style>
+</head>
+<body>
+  <div id="deck">
+    <!-- SLIDE 1: שער -->
+    <div class="page aurora fx col ac jc">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="fx col ac" style="gap:34px;text-align:center;max-width:1400px;">
+        <div class="eyebrow"><span class="dot"></span>הדרכה · <span dir="ltr">AI Workshop</span></div>
+        <h1 class="title" style="font-size:104px;line-height:1.02;">כותרת ראשית עם<br><span class="spec">ביטוי מודגש</span></h1>
+        <p class="sub" style="font-size:33px;text-align:center;max-width:1080px;">משפט פתיחה אחד שמסביר על מה המצגת, בשפה פשוטה וברורה.</p>
+        <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: נקודות -->
+    <div class="page aurora">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="hd">
+        <div class="eyebrow"><span class="dot"></span>סקירה</div>
+        <h1 class="title">כותרת השקופית</h1>
+        <p class="sub">משפט פתיחה שממסגר את הנקודות שלהלן, כולל מונח כמו <span dir="ltr">Claude Sonnet</span> (בתוך טקסט עברי).</p>
+      </div>
+      <div class="glass f1 fx col" style="padding:46px 56px;gap:26px;margin-top:32px;justify-content:center;">
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c1);"></span><span class="ink-t fw6" style="font-size:26px;">נקודה ראשונה — ברורה וממוקדת, שורה וחצי לכל היותר.</span></div>
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c3);"></span><span class="ink-t fw6" style="font-size:26px;">נקודה שנייה עם מונח טכני: <span dir="ltr">RAG Pipeline</span>, ומשפט שממשיך אחריו.</span></div>
+        <div class="fx ac" style="gap:18px;"><span class="bullet" style="background:var(--c6);"></span><span class="ink-t fw6" style="font-size:26px;">נקודה שלישית עם מספר ויחידה: <span dir="ltr">$3.00 / 1M tokens</span>.</span></div>
+      </div>
+      <div class="take" style="margin-top:24px;">מסקנה — <span class="hi">הדבר האחד שכדאי לזכור</span>.</div>
+    </div>
+
+    <!-- SLIDE 3: השוואה -->
+    <div class="page aurora">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="hd">
+        <div class="eyebrow"><span class="dot"></span>השוואה</div>
+        <h1 class="title">לפני ואחרי</h1>
+        <p class="sub">המצב הקיים בצד ימין (זכוכית), והאפשרות המומלצת משמאל (כהה).</p>
+      </div>
+      <div class="grid f1 ac" style="grid-template-columns:1fr 1fr;gap:40px;margin-top:34px;">
+        <div class="glass" style="padding:48px;">
+          <div class="chip" style="background:rgba(100,116,139,.14);color:var(--muted);margin-bottom:22px;">אפשרות א'</div>
+          <div class="ink-t fw8" style="font-size:32px;line-height:1.2;margin-bottom:26px;">הגישה הנוכחית</div>
+          <div class="fx col" style="gap:14px;">
+            <div class="fx ac" style="gap:12px;"><span class="bullet" style="width:10px;height:10px;background:var(--muted);"></span><span class="muted fw6" style="font-size:23px;">מגבלה ראשונה</span></div>
+            <div class="fx ac" style="gap:12px;"><span class="bullet" style="width:10px;height:10px;background:var(--muted);"></span><span class="muted fw6" style="font-size:23px;">מגבלה שנייה</span></div>
+          </div>
+        </div>
+        <div class="inkcard" style="padding:48px;">
+          <div class="chip" style="background:rgba(255,255,255,.14);color:#fff;margin-bottom:22px;">אפשרות ב'</div>
+          <div class="white fw8" style="font-size:32px;line-height:1.2;margin-bottom:26px;">הגישה המומלצת</div>
+          <div class="fx col" style="gap:14px;">
+            <div class="fx ac" style="gap:12px;"><span class="dot" style="width:12px;height:12px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:23px;">יתרון ראשון</span></div>
+            <div class="fx ac" style="gap:12px;"><span class="dot" style="width:12px;height:12px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:23px;">יתרון שני <b class="white">מודגש</b></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="take" style="margin-top:28px;">שורה תחתונה — <span class="hi">ההחלטה המומלצת</span>.</div>
+    </div>
+
+    <!-- SLIDE 4: נתונים -->
+    <div class="page aurora">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="hd">
+        <div class="eyebrow"><span class="dot"></span>נתונים</div>
+        <h1 class="title">כותרת עם מספר מרכזי</h1>
+        <p class="sub">הסבר קצר על מה שהמספרים מראים.</p>
+      </div>
+      <div class="grid f1 ac" style="grid-template-columns:1.4fr 1fr;gap:40px;margin-top:44px;">
+        <div class="glass" style="padding:48px 52px;">
+          <div class="fx col" style="gap:28px;">
+            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:23px;">עבודה ידנית (דקות)</div><div class="bartrack"><div class="barfill f-3" style="width:90%;">45 דק'</div></div></div>
+            <div class="fx col" style="gap:10px;"><div class="fw7 ink-t" style="font-size:23px;">עם התהליך החדש (דקות)</div><div class="bartrack"><div class="barfill f-6" style="width:20%;">2 דק'</div></div></div>
+          </div>
+        </div>
+        <div class="inkcard fx col ac jc" style="padding:44px;text-align:center;gap:8px;">
+          <div class="bignum spec" dir="ltr">22×</div>
+          <div class="white fw7" style="font-size:26px;line-height:1.35;">מהיר יותר מקצה לקצה</div>
+        </div>
+      </div>
+      <div class="take" style="margin-top:28px;">מה עושים עם זה — <span class="hi">פעולה מומלצת</span>.</div>
+    </div>
+
+    <!-- SLIDE 5: שלבים -->
+    <div class="page aurora">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div class="hd" style="margin-bottom:34px;">
+        <div class="eyebrow"><span class="dot"></span>תהליך</div>
+        <h1 class="title">איך זה עובד, שלב אחר שלב</h1>
+      </div>
+      <div class="glass f1 fx col" style="padding:44px 54px;gap:26px;justify-content:center;">
+        <div class="fx ac" style="gap:22px;"><div class="numchip" style="background:var(--c1);">1</div><div><div class="ink-t fw8" style="font-size:28px;">שלב ראשון</div><div class="muted fw5" style="font-size:22px;margin-top:4px;">משפט אחד שמתאר מה קורה.</div></div></div>
+        <div class="fx ac" style="gap:22px;"><div class="numchip" style="background:var(--c3);">2</div><div><div class="ink-t fw8" style="font-size:28px;">שלב שני</div><div class="muted fw5" style="font-size:22px;margin-top:4px;">משפט אחד שמתאר מה קורה.</div></div></div>
+        <div class="fx ac" style="gap:22px;"><div class="numchip" style="background:var(--c6);">3</div><div><div class="ink-t fw8" style="font-size:28px;">שלב שלישי</div><div class="muted fw5" style="font-size:22px;margin-top:4px;">משפט אחד שמתאר מה קורה.</div></div></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: מפריד פרקים -->
+    <div class="page dark fx col ac jc">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;filter:brightness(0) invert(1);"></div>
+      <div class="fx col ac" style="gap:28px;text-align:center;max-width:1300px;">
+        <div class="eyebrow on-dark"><span class="dot"></span>חלק שני</div>
+        <h1 class="title on-dark" style="font-size:88px;">אמירה מרכזית עם <span class="spec">דגש</span></h1>
+        <p class="sub on-dark" style="text-align:center;">משפט תומך שמציג את הפרק הבא.</p>
+        <div class="specbar" style="width:240px;height:8px;border-radius:999px;"></div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: סיכום -->
+    <div class="page aurora fx col ac jc">
+      <div class="wm"><img src="../assets/logo-placeholder.svg" alt="לוגו" style="height:56px;width:auto;"></div>
+      <div style="width:100%;">
+        <div class="fx col ac" style="gap:12px;text-align:center;margin-bottom:28px;">
+          <div class="eyebrow"><span class="dot"></span>לסיכום</div>
+          <h1 class="title" style="font-size:56px;">הנקודות שכדאי לזכור</h1>
+        </div>
+        <div class="grid" style="grid-template-columns:repeat(3,1fr);gap:20px;">
+          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">1</div><div class="ink-t fw8" style="font-size:22px;line-height:1.25;">נקודה ראשונה</div><div class="muted fw6" style="font-size:18px;line-height:1.45;">משפט הסבר קצר.</div></div>
+          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">2</div><div class="ink-t fw8" style="font-size:22px;line-height:1.25;">נקודה שנייה</div><div class="muted fw6" style="font-size:18px;line-height:1.45;">משפט הסבר קצר.</div></div>
+          <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">3</div><div class="ink-t fw8" style="font-size:22px;line-height:1.25;">נקודה שלישית</div><div class="muted fw6" style="font-size:18px;line-height:1.45;">משפט הסבר קצר.</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating navigation (auto-populated by the script below) -->
+  <div class="nav-bar">
+    <button type="button" class="nav-btn" id="prev-btn" aria-label="שקופית קודמת">&larr;</button>
+    <div class="nav-dots" id="nav-dots"></div>
+    <div class="nav-counter" id="nav-counter">1 / 1</div>
+    <button type="button" class="nav-btn" id="next-btn" aria-label="שקופית הבאה">&rarr;</button>
+    <button type="button" class="nav-btn" id="fs-btn" aria-label="Toggle fullscreen" title="Fullscreen (F)"></button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const deck = document.getElementById('deck');
+      const pages = Array.from(deck.querySelectorAll('.page'));
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+      const dotsContainer = document.getElementById('nav-dots');
+      const counter = document.getElementById('nav-counter');
+      const rtl = document.documentElement.dir === 'rtl';
+
+      let currentIndex = 0;
+      pages[currentIndex].classList.add('active');
+
+      pages.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('nav-dot');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+      const dots = Array.from(dotsContainer.querySelectorAll('.nav-dot'));
+
+      // Scale the fixed 1920x1080 deck to fit any viewport
+      function resizeDeck() {
+        const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        deck.style.transform = `translate(-50%, -50%) scale(${scale})`;
+      }
+      window.addEventListener('resize', resizeDeck);
+      resizeDeck();
+
+      function updateControls() {
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === pages.length - 1;
+        dots.forEach((dot, index) => dot.classList.toggle('active', index === currentIndex));
+        counter.textContent = `${currentIndex + 1} / ${pages.length}`;
+      }
+      function goToSlide(index) {
+        if (index < 0 || index >= pages.length) return;
+        pages[currentIndex].classList.remove('active');
+        currentIndex = index;
+        pages[currentIndex].classList.add('active');
+        updateControls();
+      }
+      const nextSlide = () => goToSlide(currentIndex + 1);
+      const prevSlide = () => goToSlide(currentIndex - 1);
+      prevBtn.addEventListener('click', prevSlide);
+      nextBtn.addEventListener('click', nextSlide);
+
+      // Fullscreen toggle
+      const fsBtn = document.getElementById('fs-btn');
+      const ICON_EXPAND = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg>';
+      const ICON_COMPRESS = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/></svg>';
+      function updateFsIcon() { fsBtn.innerHTML = document.fullscreenElement ? ICON_COMPRESS : ICON_EXPAND; }
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      }
+      fsBtn.addEventListener('click', toggleFullscreen);
+      document.addEventListener('fullscreenchange', updateFsIcon);
+      updateFsIcon();
+
+      // Keyboard: arrows follow reading direction; Space = next; F = fullscreen
+      document.addEventListener('keydown', (e) => {
+        if (e.key === ' ') { e.preventDefault(); nextSlide(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); rtl ? prevSlide() : nextSlide(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); rtl ? nextSlide() : prevSlide(); }
+        else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+      });
+
+      // Swipe: swiping toward the start of the reading direction goes forward
+      let touchStartX = 0;
+      document.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+      document.addEventListener('touchend', (e) => {
+        const dx = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(dx) < 50) return;
+        const forward = rtl ? dx > 0 : dx < 0;
+        forward ? nextSlide() : prevSlide();
+      }, { passive: true });
+
+      updateControls();
+    });
+  </script>
+</body></html>
