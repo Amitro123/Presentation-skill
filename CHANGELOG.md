@@ -2,6 +2,17 @@
 
 Release notes for each version. The Release workflow publishes the section that matches the tag.
 
+## v1.2.1
+
+Bug fixes, most found in a code review of v1.2.0.
+
+- **Dark body slides:** a `bullets`, `cards`, `compare`, `steps`, `stats`, `image`, `table` or `closing` slide with `"mode": "dark"` now gets light headings (they were dark on dark), and cards on dark slides stay opaque enough to read.
+- **Compare slides:** the label above each column no longer stretches across the whole card.
+- **Right-to-left text:** numbers with unit symbols such as `42 °C` or `5 µs` are isolated as one piece instead of splitting before the unit.
+- **Accessibility:** progress dots in the navigation bar are focusable, labelled ("Go to slide N") and respond to Enter.
+- **Builder:** command-line values that contain `=` are no longer cut at the first `=`; apostrophes are escaped in generated HTML.
+- **Release tooling:** a missing CHANGELOG section now fails with a clear message on stderr and exit code 2.
+
 ## v1.2.0
 
 First public release: a template and an AI skill for building large-screen slide decks as single HTML files, from your own documents, in any language — including right-to-left.

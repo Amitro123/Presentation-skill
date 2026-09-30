@@ -129,6 +129,7 @@ html, body {
 
 /* ---- Surfaces & helpers ---- */
 .glass { background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.78); border-radius: 20px; box-shadow: 0 16px 46px rgba(15,23,42,.10); }
+.dark .glass { background: rgba(255,255,255,.94); border-color: rgba(255,255,255,.2); }   /* light cards stay readable on dark slides */
 .inkcard { background: linear-gradient(150deg, var(--ink), var(--ink-2)); color: var(--on-dark); border-radius: 20px; box-shadow: 0 18px 48px rgba(15,23,42,.30); }
 .spec { background: var(--accent); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; } /* gradient text */
 .dark .spec { background-image: var(--accent-on-dark); }
@@ -258,13 +259,13 @@ html, body {
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="grid" style="flex:1;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch;">
           <div class="glass fx col" style="padding:52px;gap:32px;justify-content:center;">
-            <div class="chip" style="align-self:flex-start;background:rgba(100,116,139,.14);color:var(--muted);font-size:22px;">אפשרות א'</div>
+            <div class="chip" style="align-self:flex-start;background:rgba(100,116,139,.14);color:var(--muted);font-size:22px;">אפשרות א&#39;</div>
             <div class="ink-t fw8" style="font-size:44px;line-height:1.2;">הגישה הנוכחית</div>
             <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:36px;line-height:1.35;">מגבלה ראשונה</span></div>
             <div class="fx" style="gap:16px;align-items:baseline;"><span class="bullet" style="background:var(--muted);width:14px;height:14px;"></span><span class="muted fw6" style="font-size:36px;line-height:1.35;">מגבלה שנייה</span></div>
           </div>
           <div class="inkcard fx col" style="padding:52px;gap:32px;justify-content:center;">
-            <div class="chip" style="align-self:flex-start;background:rgba(255,255,255,.14);color:#fff;font-size:22px;">אפשרות ב'</div>
+            <div class="chip" style="align-self:flex-start;background:rgba(255,255,255,.14);color:#fff;font-size:22px;">אפשרות ב&#39;</div>
             <div class="white fw8" style="font-size:44px;line-height:1.2;">הגישה המומלצת</div>
             <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:36px;line-height:1.35;">יתרון ראשון</span></div>
             <div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:36px;line-height:1.35;">יתרון שני <span class="white fw8">מודגש</span></span></div>
@@ -285,8 +286,8 @@ html, body {
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="grid" style="flex:1;grid-template-columns:1.4fr 1fr;gap:40px;align-items:stretch;">
           <div class="glass fx col" style="padding:56px 60px;justify-content:space-evenly;">
-            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עבודה ידנית (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-3" style="width:90%;font-size:26px;padding-inline:24px;">45 דק'</div></div></div>
-            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עם התהליך החדש (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-6" style="width:20%;font-size:26px;padding-inline:24px;">2 דק'</div></div></div>
+            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עבודה ידנית (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-3" style="width:90%;font-size:26px;padding-inline:24px;">45 דק&#39;</div></div></div>
+            <div class="fx col" style="gap:14px;"><div class="fw7 ink-t" style="font-size:30px;">עם התהליך החדש (דקות)</div><div class="bartrack" style="height:64px;"><div class="barfill f-6" style="width:20%;font-size:26px;padding-inline:24px;">2 דק&#39;</div></div></div>
           </div>
           <div class="inkcard fx col ac jc" style="padding:52px;text-align:center;gap:14px;">
             <div class="bignum spec" style="font-size:180px;" dir="ltr">22×</div>
@@ -298,11 +299,11 @@ html, body {
     </div>
 
     <!-- SLIDE 5: steps — איך זה עובד, שלב אחר שלב -->
-    <div class="page aurora">
+    <div class="page dark">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="hd">
-        <div class="eyebrow"><span class="dot"></span>תהליך</div>
-        <h1 class="title">איך זה עובד, שלב אחר שלב</h1>
+        <div class="eyebrow on-dark"><span class="dot"></span>תהליך</div>
+        <h1 class="title on-dark">איך זה עובד, שלב אחר שלב</h1>
       </div>
       <div class="f1 fx col" style="margin-top:36px;min-height:0;">
         <div class="glass fx col" style="flex:1;padding:40px 60px;gap:40px;justify-content:space-evenly;">
@@ -392,7 +393,11 @@ html, body {
       pages.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.classList.add('nav-dot');
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+        dot.tabIndex = 0;
         dot.addEventListener('click', () => goToSlide(index));
+        dot.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); goToSlide(index); } });
         dotsContainer.appendChild(dot);
       });
       const dots = Array.from(dotsContainer.querySelectorAll('.nav-dot'));

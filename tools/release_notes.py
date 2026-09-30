@@ -8,5 +8,6 @@ tag = sys.argv[1]
 text = (pathlib.Path(__file__).resolve().parents[1] / "CHANGELOG.md").read_text(encoding="utf-8")
 m = re.search(rf"^## {re.escape(tag)}\s*\n(.*?)(?=^## |\Z)", text, re.S | re.M)
 if not m or not m.group(1).strip():
-    sys.exit(f"CHANGELOG.md has no section '## {tag}'")
+    print(f"CHANGELOG.md has no section '## {tag}' — add one before releasing", file=sys.stderr)
+    sys.exit(2)
 print(m.group(1).strip())

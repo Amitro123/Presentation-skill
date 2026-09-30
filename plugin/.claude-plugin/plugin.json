@@ -2,7 +2,7 @@
   "name": "html-presentation",
   "displayName": "HTML Presentation",
   "description": "Build large-screen slide decks as single HTML files from your documents: asks about audience and length, writes a short content file, builds the deck, and audits it. RTL-aware (Hebrew, Arabic), brandable, prints to PDF.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": { "name": "Amitro123" },
   "homepage": "https://github.com/Amitro123/Presentation-skill",
   "repository": "https://github.com/Amitro123/Presentation-skill",

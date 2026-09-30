@@ -16,7 +16,7 @@ const fs = require('fs');
 const path = require('path');
 
 const args = process.argv.slice(2);
-const opt = Object.fromEntries(args.filter(a => a.startsWith('--')).map(a => { const [k, v] = a.slice(2).split('='); return [k, v === undefined ? true : v]; }));
+const opt = Object.fromEntries(args.filter(a => a.startsWith('--')).map(a => { const i = a.indexOf('='); return i < 0 ? [a.slice(2), true] : [a.slice(2, i), a.slice(i + 1)]; }));
 const input = args.find(a => !a.startsWith('--'));
 if (!input) { console.error('usage: node scripts/build-deck.js content.json [--out=deck.html] [--embed]'); process.exit(2); }
 
@@ -30,8 +30,8 @@ const warnings = [];
 const warn = m => warnings.push(m);
 
 // ---------- text helpers ----------
-const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const LATIN = /[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'’-]*(?:\s+[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'’-]*)*/g;
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const LATIN = /[A-Za-z0-9$°µΩ][A-Za-z0-9$%°µΩ.,:\/+#&@_'’-]*(?:\s+[A-Za-z0-9$°µΩ][A-Za-z0-9$%°µΩ.,:\/+#&@_'’-]*)*/g;
 function plain(text) {
   const t = String(text);
   if (!rtl) return esc(t);
@@ -85,7 +85,7 @@ function imgSrc(p) {
 }
 const eyebrow = (t, dark) => t ? `<div class="eyebrow${dark ? ' on-dark' : ''}"><span class="dot"></span>${rich(t, 'spec')}</div>` : '';
 const take = t => t ? `\n      <div class="take" style="margin-top:32px;font-size:30px;">${rich(t, 'hi')}</div>` : '';
-const header = (s, dark) => `<div class="hd">
+const header = (s, dark = s.mode === 'dark') => `<div class="hd">
         ${eyebrow(s.eyebrow, dark)}
         <h1 class="title${dark ? ' on-dark' : ''}">${rich(s.title)}</h1>${s.subtitle ? `\n        <p class="sub${dark ? ' on-dark' : ''}">${rich(s.subtitle)}</p>` : ''}
       </div>`;
@@ -200,8 +200,8 @@ const T = {
     return { mode: 'aurora', cls: 'fx col ac jc', body: `
       <div style="width:100%;">
         <div class="fx col ac" style="gap:16px;text-align:center;margin-bottom:44px;">
-          ${eyebrow(s.eyebrow)}
-          <h1 class="title" style="font-size:72px;">${rich(s.title)}</h1>
+          ${eyebrow(s.eyebrow, s.mode === 'dark')}
+          <h1 class="title${s.mode === 'dark' ? ' on-dark' : ''}" style="font-size:72px;">${rich(s.title)}</h1>
         </div>
         <div class="grid" style="grid-template-columns:repeat(${cols},1fr);gap:28px;">
           ${pts.map((p, i) => `<div class="glass fx col" style="padding:52px 44px;gap:22px;background:rgba(255,255,255,.94);"><div class="numchip specbar" style="width:72px;height:72px;font-size:34px;">${i + 1}</div><div class="ink-t fw8" style="font-size:38px;line-height:1.25;">${rich(p.title)}</div><div class="muted fw6" style="font-size:28px;line-height:1.45;">${rich(p.text || '')}</div></div>`).join('\n          ')}
