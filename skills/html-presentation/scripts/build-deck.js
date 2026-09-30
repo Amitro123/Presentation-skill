@@ -157,7 +157,7 @@ const T = {
     const fs = pick(n, [36, 36, 36, 34, 31, 28]);
     const side = (o, dark) => { const items = o.items || []; if (items.length > 5) warn(`compare "${s.title}": ${items.length} items on one side (limit ~5)`);
       return `<div class="${dark ? 'inkcard' : 'glass'} fx col" style="padding:52px;gap:${Math.round(fs * .9)}px;justify-content:center;">
-            ${o.label ? `<div class="chip" style="background:${dark ? 'rgba(255,255,255,.14)' : 'rgba(100,116,139,.14)'};color:${dark ? '#fff' : 'var(--muted)'};font-size:22px;">${rich(o.label, dark ? 'white' : 'muted')}</div>` : ''}
+            ${o.label ? `<div class="chip" style="align-self:flex-start;background:${dark ? 'rgba(255,255,255,.14)' : 'rgba(100,116,139,.14)'};color:${dark ? '#fff' : 'var(--muted)'};font-size:22px;">${rich(o.label, dark ? 'white' : 'muted')}</div>` : ''}
             ${o.title ? `<div class="${dark ? 'white' : 'ink-t'} fw8" style="font-size:${fs + 8}px;line-height:1.2;">${rich(o.title)}</div>` : ''}
             ${items.map(t => dark
               ? `<div class="fx" style="gap:16px;align-items:baseline;"><span class="dot" style="width:16px;height:16px;flex-shrink:0;"></span><span class="white-2 fw6" style="font-size:${fs}px;line-height:1.35;">${rich(t, 'white fw8')}</span></div>`
