@@ -27,7 +27,9 @@ The script adds markup, theme, logo, navigation and print rules from `assets/tem
 | `logoSize` | `[width, height]` in px | `[200, 56]` |
 | `logoOffset` | `[x, y]` distance from the edge in px | `[104, 52]` |
 | `logoPosition` | `top-end`, `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center`, `none` | `top-end` |
-| `tokens` | Theme overrides: `c1`…`c6`, `ink`, `ink2`, `muted`, `bg`, `bg2`, `highlight`, `accent`, `accentOnDark` | template values |
+| `tokens` | Theme overrides: `c1`…`c6`, `ink`, `ink2`, `muted`, `bg`, `bg2`, `highlight`, `warn`, `accent`, `accentOnDark` | template values |
+| `duration` | Talk length in minutes. The timer in the navigation bar counts down from it, turns red in the last 20% (at most 10 minutes) and shows overtime as `+mm:ss`. Without it the timer counts up | none |
+| `timer` | Set `false` to hide the timer | `true` |
 | `embed` | Inline the logo and every slide image as data URIs, for one file you can send; same as `--embed` | `false` |
 
 ## Slide types
@@ -53,7 +55,7 @@ The builder prints a warning when a limit is exceeded.
 
 ### Speaker notes
 
-Any slide can have `"notes": "..."` — what the presenter should say. Notes are never shown on the slide or in the PDF. Pressing `N` (or the screen button in the navigation bar) opens a presenter window with the current and next slide, the notes and a timer; keys pressed in that window drive the deck. A blank line (`\n\n`) starts a new paragraph. Write notes when the user asks for them or supplies talking points; do not pad every slide.
+Any slide can have `"notes": "..."` — what the presenter should say. Notes are never shown on the slide or in the PDF. Pressing `N` (or the screen button in the navigation bar) opens a presenter window with the current and next slide, the notes and the same timer as the navigation bar (start/pause there, in the bar, or with `T`); keys pressed in that window drive the deck. A blank line (`\n\n`) starts a new paragraph. Write notes when the user asks for them or supplies talking points; do not pad every slide.
 
 ### Images
 

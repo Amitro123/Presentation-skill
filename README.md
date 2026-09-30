@@ -43,6 +43,7 @@ Replace the slides inside `<div id="deck">`. Navigation, progress dots and the c
 | `←` / `PageUp` | Previous slide |
 | `Home` / `End` | First / last slide |
 | `F` | Toggle fullscreen |
+| `T` | Start / pause the timer (click the timer pill too; double-click resets) |
 | `N` | Presenter view: current and next slide, speaker notes, timer (second window; keys there drive the deck) |
 | Swipe | Next / previous |
 
@@ -52,7 +53,11 @@ Add `"notes"` to any slide in the content file. Notes never appear on the slide 
 
 ![Presenter view: the current slide, the next slide, a timer and the speaker notes for this slide](docs/images/presenter-view.jpg)
 
-*The current slide, the next one, a timer and this slide's notes. Keys pressed in this window move the deck on the big screen. Works in right-to-left decks too.*
+*The current slide, the next one, the timer and this slide's notes. Keys pressed in this window move the deck on the big screen. Works in right-to-left decks too.*
+
+### Timer
+
+A small timer sits next to the slide counter. Click it (or press `T`) to start or pause, double-click to reset. Set `"duration": 45` in the content file's `meta` and it counts down, turns red for the last few minutes and shows overtime as `+01:30`; without a duration it simply counts up. The presenter view shows the same timer.
 
 ## Install
 

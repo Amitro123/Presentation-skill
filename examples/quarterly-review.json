@@ -8,7 +8,8 @@
     "date": "October 2026",
     "logoPosition": "top-end",
     "logo": "../assets/logo-placeholder.svg",
-    "logoDark": "../assets/logo-placeholder-light.svg"
+    "logoDark": "../assets/logo-placeholder-light.svg",
+    "duration": 20
   },
   "slides": [
     {

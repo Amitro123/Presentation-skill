@@ -99,7 +99,7 @@ Rules:
    - Steps, implementation, risks
    - Summary / next steps
 3. Write headlines that state the point, not the topic.
-4. If the source has talking points, or the user will present live (a talk or a workshop), put what to say in each slide's `notes`; the slide keeps only the headline and the essentials. Mention the presenter view (`N`) when you deliver the deck.
+4. If the source has talking points, or the user will present live (a talk or a workshop), put what to say in each slide's `notes`; the slide keeps only the headline and the essentials. Mention the presenter view (`N`) when you deliver the deck. If the user states the talk length, set `meta.duration` so the timer counts down.
 
 ### 3. Choose a visual mode per slide (Formatter)
 

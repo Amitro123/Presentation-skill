@@ -280,7 +280,7 @@ if (meta.font === false || meta.fontLink === false) head = head.replace(/<link[^
 const rootEnd = head.indexOf('\n}', head.indexOf(':root'));
 let rootBlock = head.slice(head.indexOf(':root'), rootEnd), restHead = head.slice(rootEnd);
 const preRoot = head.slice(0, head.indexOf(':root'));
-const tokenMap = { c1: '--c1', c2: '--c2', c3: '--c3', c4: '--c4', c5: '--c5', c6: '--c6', ink: '--ink', ink2: '--ink-2', muted: '--muted', bg: '--bg', bg2: '--bg-2', highlight: '--highlight', accent: '--accent', accentOnDark: '--accent-on-dark' };
+const tokenMap = { c1: '--c1', c2: '--c2', c3: '--c3', c4: '--c4', c5: '--c5', c6: '--c6', ink: '--ink', ink2: '--ink-2', muted: '--muted', bg: '--bg', bg2: '--bg-2', highlight: '--highlight', warn: '--warn', accent: '--accent', accentOnDark: '--accent-on-dark' };
 // values may be url("data:...;base64,...") and so contain ';'
 function setVar(name, val) { const re = new RegExp(`(${name.replace(/[-]/g, '\\-')}:\\s*)(?:url\\("[^"]*"\\)|[^;"])+;`); if (re.test(rootBlock)) rootBlock = rootBlock.replace(re, (_, p) => `${p}${val};`); else warn(`token ${name} not found in template`); }
 for (const [k, v] of Object.entries(meta.tokens || {})) { if (tokenMap[k]) setVar(tokenMap[k], v); else warn(`unknown token "${k}"`); }
@@ -312,7 +312,8 @@ const slides = (content.slides || []).map((s, i) => {
 });
 if (!slides.length) { console.error('no slides in content file'); process.exit(1); }
 
-const html = `${head}\n  <div id="deck" data-logo="${esc(meta.logoPosition)}">\n\n${slides.join('\n')}\n  </div>\n\n${tail}`;
+const timerAttrs = (meta.duration ? ` data-duration="${Number(meta.duration)}"` : '') + (meta.timer === false ? ' data-timer="off"' : '');
+const html = `${head}\n  <div id="deck" data-logo="${esc(meta.logoPosition)}"${timerAttrs}>\n\n${slides.join('\n')}\n  </div>\n\n${tail}`;
 const out = path.resolve(typeof opt.out === 'string' ? opt.out : input.replace(/\.json$/i, '') + '.html');
 fs.writeFileSync(out, html);
 console.log(`wrote ${path.relative(process.cwd(), out)} — ${slides.length} slides, ${(html.length / 1024).toFixed(0)} KB (content file ${(fs.statSync(input).size / 1024).toFixed(1)} KB)`);
