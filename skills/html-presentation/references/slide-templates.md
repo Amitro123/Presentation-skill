@@ -20,6 +20,7 @@ The image comes from `--logo` (and `--logo-dark` on `.dark` slides) in `:root`; 
     <h1 class="title" style="font-size:104px;line-height:1.02;">Main title with a <span class="spec">highlight</span></h1>
     <p class="sub" style="font-size:33px;text-align:center;max-width:1080px;">One sentence on what this deck is about and for whom.</p>
     <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
+    <div class="byline">Presenter Name · Month YYYY</div>  <!-- only if the author should be shown; add .on-dark on dark covers -->
   </div>
 </div>
 ```

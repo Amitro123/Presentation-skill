@@ -77,7 +77,30 @@ skills/html-presentation/
     └── verification-checker.md   # binary checklist + self-repair runbook
 ```
 
-Its defaults are overridable (see above). Install it the way your tool loads skills — for Claude Code, copy the folder to `.claude/skills/` (project) or `~/.claude/skills/` (global); for Claude.ai / Cowork, add it under *Settings → Skills*. Then ask, for example: *"Create a presentation from this document."* The skill plans 8–14 slides, builds the HTML from `template.html`, and runs its checklist before handing the file back.
+Its defaults are overridable (see above). Install it the way your tool loads skills — for Claude Code, copy the folder to `.claude/skills/` (project) or `~/.claude/skills/` (global); for Claude.ai / Cowork, add it under *Settings → Skills*.
+
+### How a session goes
+
+1. You ask for a presentation.
+2. Claude **asks three questions** before building anything:
+   - who is the audience and what should they do afterwards;
+   - how many slides;
+   - whether the presenter's name should appear on the cover (and what it is).
+3. You answer, then **attach whatever source material you want** — documents, PDFs, notes, data, links, images — or say there is none.
+4. Claude builds the deck from `template.html`, fitted to the audience and the slide count, and runs its checklist.
+5. You iterate in plain language ("shorten slide 4", "make the cover dark").
+
+Questions you already answered in your first message, or set in `assets/brand.md` (`audience`, `author`, `slides`), are not asked again.
+
+### Keep your best result as a reference
+
+When you get a deck you are happy with, **save it as a reference for the next ones**. Claude then matches its design (layout choices, which modes go where, density, spacing) and its language (tone, terminology, headline style) instead of starting from the generic template.
+
+- Copy the file to `assets/references/decks/` — or just tell Claude *"save this as a reference deck"*.
+- Optionally add notes to `assets/brand.md`, e.g. *"formal tone, headlines under eight words, dark cover"*.
+- With several references, Claude names the one it will follow and you can pick another.
+
+A reference deck guides style only; its content is never copied. Your explicit instructions always win over it.
 
 ## Project layout
 

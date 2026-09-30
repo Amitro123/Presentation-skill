@@ -10,6 +10,7 @@ Drop your brand material here, then ask Claude to adapt the project (see "Adapti
 | Imagery | photos, illustrations, icons used in slides | `<img>` content inside slides |
 | `brand.md` *(optional)* | Configuration and free-text rules — copy [`brand.example.md`](brand.example.md). Covers colors, font, logo file and position, language/RTL, slide counts, density limits, which reference files to use | Everything below is overridable from here |
 | `references/` *(optional)* | Your own reference files: same name as a default (e.g. `slide-templates.md`) replaces it, a new name adds to it | The skill's design rules, templates and checks |
+| `references/decks/` *(optional)* | Finished decks you were happy with | Matched for design and language in future decks |
 
 `logo-placeholder.svg` and `logo-placeholder-light.svg` are stand-ins; delete them once you add your own logo.
 

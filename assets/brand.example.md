@@ -26,6 +26,11 @@ logo_dark: assets/logo-light.svg   # optional variant for dark slides
 logo_position: top-end             # top-end | top-start | top-center | bottom-start | bottom-end | bottom-center | none
 logo_size: [200, 56]               # width, height in px
 
+# Intake defaults (Claude asks about anything left unset)
+audience: ""                       # e.g. "executive team, non-technical"
+author: ""                         # presenter name for the cover byline
+show_author: true
+
 # Structure
 slides: [8, 14]                    # min, max slides for a generated deck
 max_bullets: 5
@@ -37,6 +42,10 @@ modes: [aurora, dark, clean-bordered]   # which visual modes may be used
 references:
   disable: []                      # e.g. [technical-patterns] to ignore a default file
   extra: []                        # additional files, e.g. [assets/references/my-charts.md]
+
+# Finished decks Claude should match for design and language
+reference_decks:
+  - assets/references/decks/
 
 # Checker
 checks_off: []                     # e.g. [C5] for a deck with no RTL

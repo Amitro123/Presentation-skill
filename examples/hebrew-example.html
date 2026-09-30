@@ -134,6 +134,8 @@ html, body {
 .hd { display: flex; flex-direction: column; gap: 20px; }
 .take { border-radius: 16px; padding: 22px 34px; font-size: 27px; font-weight: 700; line-height: 1.32; background: color-mix(in srgb, var(--ink) 94%, transparent); color: var(--on-dark); }
 .take .hi { color: var(--highlight); }
+.byline { font-size: 24px; font-weight: 600; color: var(--muted); letter-spacing: .01em; }  /* presenter name / date, cover only */
+.byline.on-dark { color: var(--on-dark-2); }
 
 /* Logo slot — one .wm per slide; image comes from --logo / --logo-dark.
    Position is set with data-logo on #deck:
@@ -187,6 +189,7 @@ html, body {
         <h1 class="title" style="font-size:104px;line-height:1.02;">כותרת ראשית עם<br><span class="spec">ביטוי מודגש</span></h1>
         <p class="sub" style="font-size:33px;text-align:center;max-width:1080px;">משפט פתיחה אחד שמסביר על מה המצגת, בשפה פשוטה וברורה.</p>
         <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
+        <div class="byline">שם המציג · חודש שנה</div>
       </div>
     </div>
 

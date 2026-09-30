@@ -36,6 +36,15 @@ Nothing in this skill is fixed. Colors, fonts, logo, logo position, language, sl
 
 If the user asks for something the defaults forbid (another font, six bullets, no logo, a fourth visual mode), follow the user, apply it consistently across the deck, and mention the deviation in the report instead of "fixing" it.
 
+## Reference decks
+
+A reference deck is a finished deck the user was happy with. It carries the look (layout choices, which modes go where, density, spacing) and the language (tone, terminology, headline style, sentence length) they want next time.
+
+- Look in `assets/references/decks/` (and any path listed under `reference_decks` in `brand.md`).
+- When building a new deck, read the most relevant reference deck and match its design decisions and voice. Do not copy its content.
+- The reference deck outranks the skill's default templates on style questions; explicit user instructions outrank it.
+- After delivering a deck, if the user says they are happy with it, offer to save it to `assets/references/decks/<name>.html` and to record any notes ("formal tone, short headlines, dark cover") in `assets/brand.md`.
+
 ## Workflow
 
 ### 0. Load configuration and adapt to assets (first run, or when `assets/` changes)
@@ -52,10 +61,26 @@ If the user asks for something the defaults forbid (another font, six bullets, n
 
 Skip this step if `assets/` holds only the placeholders and the user gave no settings.
 
-### 1. Plan the narrative (Doer)
+### 1. Intake — ask before building
 
-1. Read the brief, PDF or notes. Identify audience, goal and the one takeaway.
-2. Outline **8–14 slides** (or the `slides` range in `brand.md`), one idea each. A typical flow:
+Start every new deck by asking the user these questions, in one message:
+
+1. **Audience** — who will see it (role, seniority, prior knowledge), and what should they do or decide afterwards?
+2. **Length** — how many slides?
+3. **Author** — should the presenter's name appear? If yes, the name (and optionally role/date) for the cover byline.
+
+Rules:
+
+- Skip any question the user already answered in their request or in `assets/brand.md` (`slides`, `author`, `show_author`), and never ask twice. If everything is answered, go straight to step 2.
+- If the session cannot ask interactively, state the defaults you are assuming (general audience, 8–14 slides, no author) and continue.
+- Once answered, ask the user to attach or paste the source material — documents, PDFs, notes, data, links, images — or to say there is none and the deck should be written from the brief alone. Wait for it.
+- Check for **reference decks** (see "Reference decks" below) and tell the user which one you will match for design and language; let them pick another or none.
+- Confirm a one-line summary (audience, slide count, author, sources) only if something was ambiguous; otherwise proceed.
+
+### 2. Plan the narrative (Doer)
+
+1. Read every attached document plus the intake answers. Fit depth, vocabulary and examples to the audience; identify the goal and the one takeaway.
+2. Outline exactly the number of slides the user asked for (if none: 8–14, or the `slides` range in `brand.md`), one idea each. A typical flow:
    - Cover
    - Context / problem
    - Approach or architecture
@@ -64,22 +89,23 @@ Skip this step if `assets/` holds only the placeholders and the user gave no set
    - Summary / next steps
 3. Write headlines that state the point, not the topic.
 
-### 2. Choose a visual mode per slide (Formatter)
+### 3. Choose a visual mode per slide (Formatter)
 
 - `.page.aurora` — default for anything meant to be read.
 - `.page.dark` — cover, section dividers, bold statements.
 - `.page.clean-bordered` with `.accent-border` — tables and data matrices.
 
-### 3. Build the file
+### 4. Build the file
 
 1. Start from `template.html`; keep its CSS core, navigation markup and `<script>` untouched.
 2. Set `<title>`, and `lang`/`dir` on `<html>` for the deck's language (`dir="rtl"` for Hebrew, Arabic, etc.).
 3. Replace the example slides inside `<div id="deck">`. Label each `<!-- SLIDE N: title -->`.
 4. Every slide carries an empty logo slot `<div class="wm" role="img" aria-label="Logo"></div>` (image and position come from the tokens; use `data-logo="none"` for no logo) and at least one accent element (`.spec`, `.specbar`, `.dot` or `.accent-border`).
 5. Use theme tokens (`var(--c1)`…) instead of hex values. If the user wants a different palette, change the `:root` block only.
-6. Save to the workspace root with a descriptive kebab-case name, e.g. `q3-product-review.html`. Images go in `assets/`.
+6. If the author should be shown, add `<div class="byline">Name · role · date</div>` to the cover only.
+7. Save to the workspace root with a descriptive kebab-case name, e.g. `q3-product-review.html`. Images go in `assets/`.
 
-### 4. Verify and repair (Checker)
+### 5. Verify and repair (Checker)
 
 Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
 
