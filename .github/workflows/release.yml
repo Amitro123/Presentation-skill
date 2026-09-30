@@ -4,6 +4,8 @@ name: Release
 #  - push a tag vX.Y.Z, or
 #  - run this workflow by hand (Actions -> Release -> Run workflow, works from a phone browser):
 #    it creates the tag on the chosen commit of main.
+# Notes come from the matching section of CHANGELOG.md. Running it again for an existing
+# release updates the notes and the .skill file.
 
 on:
   push:
@@ -31,12 +33,17 @@ jobs:
         run: |
           want="v$(python3 -c 'import json;print(json.load(open("plugin/.claude-plugin/plugin.json"))["version"])')"
           [ "$TAG" = "$want" ] || { echo "::error::tag $TAG does not match plugin.json version $want"; exit 1; }
-      - name: Create GitHub release with the .skill file
+      - name: Release notes from CHANGELOG.md
+        run: python3 tools/release_notes.py "$TAG" > notes.md
+      - name: Create the release, or update it if it already exists
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            gh release create "$TAG" html-presentation.skill --title "$TAG" --generate-notes --target "$GITHUB_SHA"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" --title "$TAG" --notes-file notes.md
+            gh release upload "$TAG" html-presentation.skill --clobber
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            gh release create "$TAG" html-presentation.skill --title "$TAG" --notes-file notes.md --target "$GITHUB_SHA"
           else
-            gh release create "$TAG" html-presentation.skill --title "$TAG" --generate-notes --verify-tag
+            gh release create "$TAG" html-presentation.skill --title "$TAG" --notes-file notes.md --verify-tag
           fi
