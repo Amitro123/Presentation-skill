@@ -1,0 +1,13 @@
+{
+  "name": "presentation-skill",
+  "private": true,
+  "description": "HTML presentation template and AI skill",
+  "scripts": {
+    "validate": "html-validate \"*.html\" \"examples/*.html\"",
+    "audit": "node tools/audit-deck.js template.html examples/hebrew-example.html"
+  },
+  "devDependencies": {
+    "html-validate": "^9",
+    "playwright": "^1"
+  }
+}

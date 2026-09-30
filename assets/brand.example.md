@@ -36,6 +36,7 @@ slides: [8, 14]                    # min, max slides for a generated deck
 max_bullets: 5
 max_stats: 3
 max_steps: 5
+emoji: none                        # none | allowed
 modes: [aurora, dark, clean-bordered]   # which visual modes may be used
 
 # Reference files (see "Reference resolution" in SKILL.md)

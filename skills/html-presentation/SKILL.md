@@ -107,11 +107,11 @@ Rules:
 
 ### 5. Verify and repair (Checker)
 
-Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
+Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If Node and Chromium are available, also run `node tools/audit-deck.js <file>` and fix every FAIL. If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
 
 ## Content rules
 
 - Default limits: ~5 bullets, ~3 stats, ~5 steps per slide (`max_*` in `brand.md` overrides); split otherwise.
-- No emoji. Use `.dot`, `.numchip`, `.chip`.
+- No emoji by default — use `.dot`, `.numchip`, `.chip`. If the user's configuration or reference deck uses emoji (`emoji: allowed` in `brand.md`), follow it.
 - In RTL decks wrap Latin terms, code and unit-bearing numbers in `<span dir="ltr">…</span>`.
 - Keep one idea and one takeaway per slide; the `.take` strip holds it.

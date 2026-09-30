@@ -20,6 +20,8 @@ Replace the slides inside `<div id="deck">`. Navigation, dots and the counter up
 |---|---|
 | `→` / `Space` | Next slide (reversed in RTL decks) |
 | `←` | Previous slide |
+| `PageDown` / `PageUp` | Next / previous slide |
+| `Home` / `End` | First / last slide |
 | `F` | Toggle fullscreen |
 | Swipe | Next / previous |
 
@@ -110,9 +112,21 @@ A reference deck guides style only; its content is never copied. Your explicit i
 ├── assets/                # your logo, brand.md, references/, images (see assets/README.md)
 ├── examples/              # hebrew-example.html — RTL deck built from the template
 ├── docs/                  # design system + authoring guidelines
+├── tools/audit-deck.js    # automated deck audit (Playwright)
 ├── skills/html-presentation/
 └── .github/workflows/     # HTML validation on push / PR
 ```
+
+## Audit your deck
+
+`tools/audit-deck.js` opens a deck in Chromium and checks what a script can check: JS errors, broken images and missing `alt`, keyboard navigation, reduced-motion and print rules, offline-safety (no runtime CDN script), RTL term isolation, overflow on every slide at several screen sizes, and that PDF export gives one page per slide.
+
+```bash
+npm i -D playwright
+node tools/audit-deck.js template.html examples/hebrew-example.html
+```
+
+It also works on single-file decks not built from this template, as long as slides are `.page` or `.slide` elements and the visible one has `.active`. Exit code 1 on any FAIL, so it can run in CI.
 
 ## Validation
 

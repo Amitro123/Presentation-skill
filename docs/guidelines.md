@@ -28,7 +28,7 @@ Rules of thumb for decks built on `template.html`.
 
 ## Content
 
-- No emoji; use `.dot`, `.numchip` or `.chip` for visual punctuation.
+- No emoji by default; use `.dot`, `.numchip` or `.chip` for visual punctuation. Set `emoji: allowed` in `assets/brand.md` if your style uses them.
 - Headlines state the point ("Costs drop 20×"), not the topic ("Costs").
 - Put the one thing to remember in the `.take` strip.
 
