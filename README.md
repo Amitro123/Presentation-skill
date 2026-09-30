@@ -46,6 +46,14 @@ Replace the slides inside `<div id="deck">`. Navigation, progress dots and the c
 | `N` | Presenter view: current and next slide, speaker notes, timer (second window; keys there drive the deck) |
 | Swipe | Next / previous |
 
+## Presenter view
+
+Add `"notes"` to any slide in the content file. Notes never appear on the slide or in the PDF. Press `N` during the presentation to open a second window — drag it to your laptop screen while the deck runs on the TV:
+
+![Presenter view: the current slide, the next slide, a timer and the speaker notes for this slide](docs/images/presenter-view.jpg)
+
+*The current slide, the next one, a timer and this slide's notes. Keys pressed in this window move the deck on the big screen. Works in right-to-left decks too.*
+
 ## Install
 
 The skill is self-contained: instructions, references, scripts and the template all live in [`skills/html-presentation/`](skills/html-presentation/SKILL.md).
