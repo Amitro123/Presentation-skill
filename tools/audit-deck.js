@@ -5,6 +5,7 @@
  *   npm i -D playwright            (once; uses your installed Chromium or `npx playwright install chromium`)
  *   node tools/audit-deck.js template.html examples/hebrew-example.html
  *   node tools/audit-deck.js my-deck.html --slide-selector=.slide --chromium=/path/to/chromium
+ *   node tools/audit-deck.js my-deck.html --sheet=sheet.png     # also write one contact-sheet image of all slides
  *
  * Works on decks built from template.html (`.page`) and on other single-file decks
  * that mark slides with `.slide` and the visible one with `.active`.
@@ -123,6 +124,23 @@ const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x
       const pages = (pdf.toString('latin1').match(/\/Type\s*\/Page[^s]/g) || []).length;
       add('A13', 'PDF export gives one page per slide', pages === info.n, `${pages} pages for ${info.n} slides`);
     } catch (e) { add('A13', 'PDF export gives one page per slide', false, e.message.slice(0, 80)); }
+
+    if (opt.sheet) {                     // one image with every slide: a single look instead of one per slide
+      const thumbs = [];
+      await pg.setViewportSize({ width: 1920, height: 1080 });
+      for (let i = 0; i < info.n; i++) {
+        await pg.evaluate(([sel, i]) => { const s = [...document.querySelectorAll(sel)]; s.forEach(x => x.classList.remove('active')); s[i].classList.add('active'); }, [info.sel, i]);
+        await pg.waitForTimeout(900);
+        thumbs.push((await pg.screenshot()).toString('base64'));
+      }
+      const cols = info.n <= 4 ? 2 : 3;
+      const sheet = await ctx.newPage();
+      await sheet.setViewportSize({ width: 1800, height: 100 });
+      await sheet.setContent(`<body style="margin:0;background:#888;display:grid;grid-template-columns:repeat(${cols},1fr);gap:8px;padding:8px">${thumbs.map((t, i) => `<div style="position:relative"><img style="width:100%;display:block" src="data:image/png;base64,${t}"><b style="position:absolute;top:6px;left:6px;background:#000;color:#fff;font:700 20px sans-serif;padding:2px 10px;border-radius:6px">${i + 1}</b></div>`).join('')}</body>`);
+      await sheet.waitForTimeout(300);
+      await sheet.screenshot({ path: opt.sheet, fullPage: true });
+      await sheet.close();
+    }
 
     console.log(`\n${f}`);
     for (const r of res) console.log(`  ${r.ok ? 'PASS' : 'FAIL'}  ${r.id.padEnd(3)} ${r.name}${r.detail ? '  — ' + r.detail : ''}`);

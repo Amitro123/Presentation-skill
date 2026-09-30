@@ -115,7 +115,7 @@ Both paths:
 
 ### 5. Verify and repair (Checker)
 
-Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If Node and Chromium are available, also run `node tools/audit-deck.js <file>` and fix every FAIL. Look at screenshots only for the cover and for slides the audit flags; do not review every slide visually. If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
+Run the effective checklist (the default `verification-checker.md`, or the user's override, minus any `checks_off`). If Node and Chromium are available, also run `node tools/audit-deck.js <file>` and fix every FAIL. Run the audit with `--sheet=<name>-sheet.png` and look at that single contact-sheet image once; open individual slides only where the audit or the sheet shows a problem. (If you screenshot slides yourself, advance with Space: arrow keys reverse in RTL decks.) If any item fails, fix the file and re-check before presenting it. Report the result as a short PASS/FAIL list.
 
 ## Content rules
 

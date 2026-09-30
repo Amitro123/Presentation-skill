@@ -101,10 +101,10 @@ const T = {
     const cards = s.cards || []; if (cards.length > 4) warn(`cards "${s.title}": ${cards.length} cards (limit ~4)`);
     return { mode: 'aurora', body: `
       ${header(s)}
-      <div class="grid f1 ac" style="grid-template-columns:repeat(${cards.length},1fr);gap:28px;margin-top:34px;">
-        ${cards.map((c, i) => `<div class="glass fx col" style="padding:40px 34px;gap:16px;border-top:6px solid ${C(i + 1)};">
-          <div class="ink-t fw8" style="font-size:32px;line-height:1.2;">${rich(c.title)}</div>
-          <div class="muted fw5" style="font-size:24px;line-height:1.5;">${rich(c.text)}</div>
+      <div class="grid f1" style="grid-template-columns:repeat(${cards.length},1fr);gap:28px;margin-top:34px;align-items:stretch;align-content:center;">
+        ${cards.map((c, i) => `<div class="glass fx col" style="padding:48px 40px;gap:18px;border-top:6px solid ${C(i + 1)};">
+          <div class="ink-t fw8" style="font-size:36px;line-height:1.2;">${rich(c.title)}</div>
+          <div class="muted fw5" style="font-size:27px;line-height:1.5;">${rich(c.text)}</div>
         </div>`).join('\n        ')}
       </div>${take(s.takeaway)}` };
   },
@@ -121,7 +121,7 @@ const T = {
         </div>`; };
     return { mode: 'aurora', body: `
       ${header(s)}
-      <div class="grid f1 ac" style="grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;">
+      <div class="grid f1" style="grid-template-columns:1fr 1fr;gap:40px;margin-top:30px;align-items:stretch;align-content:center;">
         ${side(s.left || {}, false)}
         ${side(s.right || {}, true)}
       </div>${take(s.takeaway)}` };
