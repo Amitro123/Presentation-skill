@@ -51,6 +51,8 @@ To re-brand a deck, change these values only. Aurora/Dark backgrounds derive fro
 - `.numchip` — numbered circle; fill with `var(--c1)`…`var(--c6)` in step order.
 - `.bartrack` / `.barfill` with `.f-1`…`.f-6` — comparison bars.
 - `.bignum` — oversized statistic. `.chip` — pill tag.
+- `.dtable` — data table (header row in `--ink`, zebra rows, `.hl` on a column's cells to highlight it); wrap it in `.accent-border` on a `clean-bordered` slide.
+- `.media` — image frame; the `<img>` inside is fitted with `object-fit: contain` (`.media.cover` to crop). Give the frame a size; the image never sets it.
 - Layout helpers: `.fx .col .ac .jc .jb .f1 .wrap .grid`, `.fw5–.fw8`.
 
 ## 5. Language direction

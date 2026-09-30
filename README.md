@@ -142,7 +142,8 @@ Nothing is fixed. Colors, font, logo, logo position, language, slide counts, den
   - `aurora` — light, soft gradients; the default for reading content.
   - `dark` — deep background with colored glow; covers, dividers, strong statements.
   - `clean-bordered` — white with a gradient frame (`.accent-border`); tables and data.
-- **Components:** `.glass` and `.inkcard` surfaces, `.eyebrow` label, `.title` / `.sub`, `.take` takeaway strip, `.numchip`, bars, big numbers.
+- **Slide types** (content files): cover, section, statement, bullets, cards, compare, steps, stats, image, table, closing, and `raw` for anything else. Images keep their proportions — a phone screenshot gets a narrow column that fills the height.
+- **Components:** `.glass` and `.inkcard` surfaces, `.eyebrow` label, `.title` / `.sub`, `.take` takeaway strip, `.numchip`, bars, big numbers, `.dtable` tables, `.media` image frames.
 - **Language:** English and left-to-right by default. For RTL languages set `<html dir="rtl" lang="…">` and change the font.
 
 Full reference: [`docs/design-system.md`](docs/design-system.md) and [`docs/guidelines.md`](docs/guidelines.md), including guidance for TVs and projectors.

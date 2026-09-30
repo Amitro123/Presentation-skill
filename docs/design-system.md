@@ -60,6 +60,8 @@ Aurora and Dark Glow backgrounds are built from these tokens with `color-mix()`,
 | `.numchip` | Numbered circle for steps |
 | `.bartrack` / `.barfill` + `.f-1`…`.f-6` | Horizontal comparison bars |
 | `.bignum` | Oversized statistic |
+| `.dtable` | Data table; `.hl` highlights a column. Wrap in `.accent-border` on a `clean-bordered` slide |
+| `.media` | Image frame; the image is fitted inside (`contain`), `.media.cover` crops |
 | `.wm` | Logo slot — image from `--logo`/`--logo-dark`, position from `data-logo` on `#deck` (`top-end` default, `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center`, `none`) |
 
 Layout helpers: `.fx .col .ac .jc .jb .f1 .wrap .grid`, weights `.fw5–.fw8`.

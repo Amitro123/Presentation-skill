@@ -80,6 +80,20 @@
       "takeaway": "Predictability is what let other teams plan around us."
     },
     {
+      "type": "image",
+      "eyebrow": "Evidence",
+      "title": "Deploys doubled after the switch",
+      "src": "assets/deploys-per-week.png",
+      "alt": "Bar chart of deploys per week: two to five a week in Q2, rising to seven to nine a week in Q3",
+      "side": "start",
+      "points": [
+        "Q2 averaged *three* deploys a week.",
+        "Q3 reached *eight* with the weekly train.",
+        "No increase in rollbacks."
+      ],
+      "takeaway": "More releases, *same risk*."
+    },
+    {
       "type": "steps",
       "eyebrow": "Next quarter",
       "title": "Our plan for Q4",
@@ -97,6 +111,45 @@
           "text": "Track time to first value weekly and publish it to the whole company."
         }
       ]
+    },
+    {
+      "type": "table",
+      "eyebrow": "Next quarter",
+      "title": "Where each team stands",
+      "columns": [
+        "Team",
+        "Release train",
+        "Test coverage",
+        "Q4 focus"
+      ],
+      "rows": [
+        [
+          "Platform",
+          "Weekly",
+          "82%",
+          "Reliability"
+        ],
+        [
+          "Payments",
+          "Weekly",
+          "76%",
+          "Export API"
+        ],
+        [
+          "Mobile",
+          "Bi-weekly",
+          "64%",
+          "Join the train"
+        ],
+        [
+          "Growth",
+          "Weekly",
+          "71%",
+          "Onboarding"
+        ]
+      ],
+      "highlight": 3,
+      "takeaway": "Mobile is *the one team* still off the weekly train."
     },
     {
       "type": "statement",

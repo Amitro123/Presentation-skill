@@ -3,7 +3,7 @@
 The default way to build a deck: write a small JSON file, then run
 
 ```bash
-node <skill>/scripts/build-deck.js my-deck.json --out=my-deck.html [--embed-logo]
+node <skill>/scripts/build-deck.js my-deck.json --out=my-deck.html [--embed]
 ```
 
 The script adds markup, theme, logo, navigation and print rules from `assets/template.html`, and sizes text to the amount of content so short slides still fill the screen. You only write the words, so a deck costs a fraction of the tokens of hand-written HTML and always matches the design system. Use `raw` slides (below) for anything the types cannot express.
@@ -28,7 +28,7 @@ The script adds markup, theme, logo, navigation and print rules from `assets/tem
 | `logoOffset` | `[x, y]` distance from the edge in px | `[104, 52]` |
 | `logoPosition` | `top-end`, `top-start`, `top-center`, `bottom-start`, `bottom-end`, `bottom-center`, `none` | `top-end` |
 | `tokens` | Theme overrides: `c1`…`c6`, `ink`, `ink2`, `muted`, `bg`, `bg2`, `highlight`, `accent`, `accentOnDark` | template values |
-| `embedLogo` | Inline the logo as a data URI (single-file delivery); same as `--embed-logo` | `false` |
+| `embed` | Inline the logo and every slide image as data URIs, for one file you can send; same as `--embed` | `false` |
 
 ## Slide types
 
@@ -45,9 +45,24 @@ All types accept `mode` (`aurora` or `dark`) except `cover`, where it selects th
 | `steps` | `eyebrow`, `title`, `steps[{title,text}]`, `takeaway` | ≤5 steps |
 | `stats` | `eyebrow`, `title`, `subtitle`, `bars[{label,value 0-100,text,color 1-6}]`, `big{value,caption}`, `takeaway` | ≤3 bars |
 | `closing` | `eyebrow`, `title`, `points[{title,text}]`, `note` | ≤6 points |
+| `image` | `eyebrow`, `title`, `subtitle`, `src`, `alt`, `caption`, `points[]`, `side` (`start`/`end`, where the image goes), `fit` (`contain`/`cover`), `takeaway` | ≤4 points |
+| `table` | `eyebrow`, `title`, `subtitle`, `columns[]`, `rows[][]`, `highlight` (0-based column to emphasise), `takeaway` | ≤8 rows, ≤5 columns |
 | `raw` | `html` (slide inner markup), `mode`, `cls`, `noLogo` | — |
 
 The builder prints a warning when a limit is exceeded.
+
+### Images
+
+- `src` is relative to the output HTML (put images in the project's `assets/`). With `--embed` it is read relative to the content file and inlined.
+- The builder reads the picture's size. Portrait images (phone screenshots) get a column exactly as wide as the picture, so they fill the slide's height; landscape images take about 57% of the width. Without `points` the image is centred on its own.
+- `alt` is required for accessibility; describe what the picture shows, including any text in it.
+- Use `fit: "cover"` only for photos where cropping the edges is acceptable; screenshots and charts must stay `contain` (the default).
+
+### Tables
+
+- Tables use the `clean-bordered` mode. Keep cells short: a word, a number or a short phrase. Long sentences belong in `bullets` or `cards`.
+- `highlight` marks the recommended option. `*text*` in a cell makes it bold; in a header it uses the highlight color.
+- Text size shrinks with the number of rows (30px down to 22px); beyond 8 rows, split the table over two slides.
 
 ## Example
 

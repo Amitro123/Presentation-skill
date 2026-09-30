@@ -2,7 +2,9 @@
 /*
  * Build a deck from a small content file.
  *
- *   node scripts/build-deck.js content.json [--out=deck.html] [--embed-logo]
+ *   node scripts/build-deck.js content.json [--out=deck.html] [--embed]
+ *
+ * --embed inlines the logo and all slide images as data URIs, for a single file you can send.
  *
  * The content file lists slides by type (cover, bullets, cards, compare, steps, stats,
  * closing, section, statement, raw). This script adds the markup, theme tokens, logo,
@@ -16,7 +18,7 @@ const path = require('path');
 const args = process.argv.slice(2);
 const opt = Object.fromEntries(args.filter(a => a.startsWith('--')).map(a => { const [k, v] = a.slice(2).split('='); return [k, v === undefined ? true : v]; }));
 const input = args.find(a => !a.startsWith('--'));
-if (!input) { console.error('usage: node scripts/build-deck.js content.json [--out=deck.html] [--embed-logo]'); process.exit(2); }
+if (!input) { console.error('usage: node scripts/build-deck.js content.json [--out=deck.html] [--embed]'); process.exit(2); }
 
 const TEMPLATE = path.resolve(__dirname, '../assets/template.html');
 const base = path.dirname(path.resolve(input));
@@ -29,15 +31,19 @@ const warn = m => warnings.push(m);
 
 // ---------- text helpers ----------
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-const LATIN = /[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'-]*(?:\s+[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'-]*)*/g;
+const LATIN = /[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'’-]*(?:\s+[A-Za-z0-9$][A-Za-z0-9$%.,:\/+#&@_'’-]*)*/g;
 function plain(text) {
-  const e = esc(text);
-  if (!rtl) return e;
-  // isolate Latin runs so punctuation does not flip inside right-to-left text
-  return e.replace(LATIN, run => {
-    const m = run.match(/[.,:]+$/); const tail = m ? m[0] : ''; const core = tail ? run.slice(0, -tail.length) : run;
-    return /[A-Za-z]/.test(core) ? `<span dir="ltr">${core}</span>${tail}` : run;
-  });
+  const t = String(text);
+  if (!rtl) return esc(t);
+  // isolate Latin runs so punctuation does not flip inside right-to-left text (match on raw text, escape after)
+  let out = '', last = 0;
+  for (const m of t.matchAll(LATIN)) {
+    let run = m[0]; const tail = (run.match(/[.,:]+$/) || [''])[0]; run = tail ? run.slice(0, -tail.length) : run;
+    out += esc(t.slice(last, m.index));
+    out += /[A-Za-z]/.test(run) ? `<span dir="ltr">${esc(run)}</span>${esc(tail)}` : esc(run + tail);
+    last = m.index + m[0].length;
+  }
+  return out + esc(t.slice(last));
 }
 // *phrase* -> accent (class given), everything else escaped
 function rich(text, cls = 'spec') {
@@ -49,6 +55,34 @@ const BR = t => String(t).split('\\n').map(s => s).join('\n');
 const lines = (t, cls) => String(t).split('\n').map(l => rich(l, cls)).join('<br>');
 
 const WM = '<div class="wm" role="img" aria-label="Logo"></div>';
+const EMBED = !!(opt.embed || opt['embed-logo'] || meta.embed || meta.embedLogo);
+const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', avif: 'image/avif' };
+// pixel size of a local PNG / JPEG / GIF / WebP (no dependencies); null if unknown
+function imageSize(p) {
+  try {
+    if (/^(data:|https?:)/.test(p)) return null;
+    const b = fs.readFileSync(path.resolve(base, p));
+    if (b.readUInt32BE(0) === 0x89504e47) return [b.readUInt32BE(16), b.readUInt32BE(20)];
+    if (b.toString('ascii', 0, 3) === 'GIF') return [b.readUInt16LE(6), b.readUInt16LE(8)];
+    if (b.toString('ascii', 0, 4) === 'RIFF' && b.toString('ascii', 12, 16) === 'VP8X') return [1 + b.readUIntLE(24, 3), 1 + b.readUIntLE(27, 3)];
+    if (b[0] === 0xff && b[1] === 0xd8) {
+      for (let i = 2; i < b.length - 9;) {
+        if (b[i] !== 0xff) { i++; continue; }
+        const m = b[i + 1], len = b.readUInt16BE(i + 2);
+        if (m >= 0xc0 && m <= 0xcf && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return [b.readUInt16BE(i + 7), b.readUInt16BE(i + 5)];
+        i += 2 + len;
+      }
+    }
+  } catch { /* fall through */ }
+  return null;
+}
+// image path relative to the output HTML; with --embed it is read relative to the content file and inlined
+function imgSrc(p) {
+  if (!EMBED || /^(data:|https?:)/.test(p)) return p;
+  const f = path.resolve(base, p);
+  if (!fs.existsSync(f)) { warn(`image not found for embedding: ${p}`); return p; }
+  return `data:${MIME[path.extname(f).slice(1).toLowerCase()] || 'application/octet-stream'};base64,${fs.readFileSync(f).toString('base64')}`;
+}
 const eyebrow = (t, dark) => t ? `<div class="eyebrow${dark ? ' on-dark' : ''}"><span class="dot"></span>${rich(t, 'spec')}</div>` : '';
 const take = t => t ? `\n      <div class="take" style="margin-top:32px;font-size:30px;">${rich(t, 'hi')}</div>` : '';
 const header = (s, dark) => `<div class="hd">
@@ -59,7 +93,8 @@ const C = n => `var(--c${((n - 1) % 6) + 1})`;
 // size by amount of content: fewer items -> larger type, so short slides fill the canvas
 const pick = (n, table) => table[Math.max(0, Math.min(n, table.length - 1))];
 // content area between the header and the takeaway, content centred in it
-const stage = inner => `<div class="f1 fx col" style="margin-top:36px;min-height:0;">
+// sized: make the area a size container so children can use cqh (container height) units
+const stage = (inner, sized) => `<div class="f1 fx col" style="margin-top:36px;min-height:0;${sized ? 'container-type:size;' : ''}">
         ${inner}
       </div>`;
 
@@ -174,6 +209,52 @@ const T = {
         ${s.note ? `<p class="sub" style="font-size:22px;text-align:center;margin:28px auto 0;">${rich(s.note)}</p>` : ''}
       </div>` };
   },
+  image(s) {
+    if (!s.src) { console.error(`image slide "${s.title}": "src" is required`); process.exit(1); }
+    if (!s.alt) warn(`image "${s.title}": add "alt" text describing the picture`);
+    const pts = s.points || []; if (pts.length > 4) warn(`image "${s.title}": ${pts.length} points beside the image (limit ~4)`);
+    const fs2 = pick(pts.length, [34, 34, 34, 31, 28]);
+    const dim = imageSize(s.src), ratio = dim ? dim[0] / dim[1] : null, portrait = ratio && ratio < 0.9;
+    if (!dim) warn(`image "${s.title}": could not read the image size (${s.src}); layout assumes landscape`);
+    // portrait images (phone screenshots) get a column as wide as the picture, so it fills the height
+    // width of a portrait frame = its height (the grid's height, 100cqh, minus padding and caption) x aspect ratio
+    const pw = portrait ? `calc((100cqh - 36px${s.caption ? ' - 50px' : ''}) * ${ratio.toFixed(4)} + 36px)` : null;
+    const frame = `<figure class="glass fx col" style="margin:0;padding:18px;gap:14px;min-height:0;">
+            <div class="media${s.fit === 'cover' ? ' cover' : ''}" style="flex:1;"><img src="${esc(imgSrc(s.src))}" alt="${esc(s.alt || '')}"></div>${s.caption ? `
+            <figcaption class="muted fw6" style="font-size:22px;text-align:center;">${rich(s.caption)}</figcaption>` : ''}
+          </figure>`;
+    if (!pts.length) return { mode: 'aurora', body: `
+      ${header(s)}
+      ${stage(`<div class="grid" style="flex:1;grid-template-columns:${portrait ? pw : '1fr'};justify-content:center;">${frame}</div>`, true)}${take(s.takeaway)}` };
+    const text = `<div class="fx col" style="gap:${Math.round(fs2 * 1.1)}px;justify-content:center;">
+            ${pts.map((t, i) => `<div class="fx" style="gap:18px;align-items:baseline;"><span class="bullet" style="background:${C([1, 3, 6, 2][i % 4])};width:${Math.round(fs2 * .42)}px;height:${Math.round(fs2 * .42)}px;transform:translateY(-.12em);"></span><span class="ink-t fw6" style="font-size:${fs2}px;line-height:1.35;">${rich(t, 'fw8')}</span></div>`).join('\n            ')}
+          </div>`;
+    const imageFirst = s.side === 'start';
+    return { mode: 'aurora', body: `
+      ${header(s)}
+      ${stage(`<div class="grid" style="flex:1;grid-template-columns:${portrait ? (imageFirst ? `${pw} 1fr` : `1fr ${pw}`) : (imageFirst ? '1.35fr 1fr' : '1fr 1.35fr')};gap:56px;">
+          ${imageFirst ? frame + '\n          ' + text : text + '\n          ' + frame}
+        </div>`, true)}${take(s.takeaway)}` };
+  },
+  table(s) {
+    const cols = s.columns || [], rows = s.rows || [];
+    if (rows.length > 8) warn(`table "${s.title}": ${rows.length} rows (limit ~8)`);
+    if (cols.length > 5) warn(`table "${s.title}": ${cols.length} columns (limit ~5)`);
+    rows.forEach((r, i) => { if (cols.length && r.length !== cols.length) warn(`table "${s.title}": row ${i + 1} has ${r.length} cells, expected ${cols.length}`); });
+    const fs2 = pick(rows.length, [30, 30, 30, 30, 28, 26, 24, 23, 22]);
+    const hl = Number.isInteger(s.highlight) ? s.highlight : -1;
+    const cell = (tag, v, j) => `<${tag}${j === hl ? ' class="hl"' : ''}>${rich(v, tag === 'th' ? 'hi' : 'fw8')}</${tag}>`;
+    return { mode: 'clean-bordered', body: `
+      ${header(s)}
+      ${stage(`<div class="accent-border" style="margin:auto 0;">
+          <table class="dtable" style="font-size:${fs2}px;">
+            ${cols.length ? `<thead><tr>${cols.map((c, j) => cell('th', c, j)).join('')}</tr></thead>` : ''}
+            <tbody>
+              ${rows.map(r => `<tr>${r.map((c, j) => cell('td', c, j)).join('')}</tr>`).join('\n              ')}
+            </tbody>
+          </table>
+        </div>`)}${take(s.takeaway)}` };
+  },
   raw(s) { return { mode: s.mode || 'aurora', cls: s.cls || '', body: '\n      ' + s.html, noWm: s.noLogo }; },
 };
 
@@ -207,9 +288,8 @@ for (const [k, v] of Object.entries(meta.tokens || {})) { if (tokenMap[k]) setVa
 // logo
 function logoUrl(p) {
   if (!p) return null;
-  if (opt['embed-logo'] || meta.embedLogo) {
-    const f = path.resolve(base, p); const ext = path.extname(f).slice(1).toLowerCase().replace('jpg', 'jpeg').replace('svg', 'svg+xml');
-    return `data:image/${ext};base64,${fs.readFileSync(f).toString('base64')}`;
+  if (EMBED) {
+    return imgSrc(p);
   }
   return p;
 }

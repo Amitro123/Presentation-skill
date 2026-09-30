@@ -171,6 +171,22 @@ html, body {
 .fx { display: flex; } .col { flex-direction: column; } .ac { align-items: center; } .jc { justify-content: center; } .jb { justify-content: space-between; } .f1 { flex: 1; } .wrap { flex-wrap: wrap; } .grid { display: grid; }
 .fw5 { font-weight: 500; } .fw6 { font-weight: 600; } .fw7 { font-weight: 700; } .fw8 { font-weight: 800; }
 
+/* Data table (clean-bordered slides) */
+.clean-bordered .eyebrow { background: var(--bg-2); border-color: var(--bg-2); }
+.dtable { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 21px; overflow: hidden; }
+.dtable th, .dtable td { text-align: start; padding: .7em 1em; line-height: 1.3; vertical-align: middle; }
+.dtable th { background: var(--ink); color: var(--on-dark); font-weight: 800; }
+.dtable td { color: var(--ink); font-weight: 600; border-top: 1px solid rgba(15,23,42,.08); }
+.dtable tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-2) 60%, #fff); }
+.dtable td:first-child { font-weight: 800; }
+.dtable .hl { background: color-mix(in srgb, var(--c1) 10%, #fff) !important; font-weight: 800; }
+.dtable th.hl { background: var(--c1) !important; color: #fff; }
+
+/* Image frame: the picture is fitted inside, never stretched */
+.media { position: relative; min-height: 0; border-radius: 20px; overflow: hidden; }
+.media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.media.cover img { object-fit: cover; }
+
 /* Respect the viewer's motion settings */
 @media (prefers-reduced-motion: reduce) {
   .page { transition: opacity .2s linear; transform: none !important; }
@@ -285,7 +301,29 @@ html, body {
       </div>
     </div>
 
-    <!-- SLIDE 6: section — אמירה מרכזית עם  דגש  -->
+    <!-- SLIDE 6: table — השוואה בטבלה -->
+    <div class="page clean-bordered">
+      <div class="wm" role="img" aria-label="Logo"></div>
+      <div class="hd">
+        <div class="eyebrow"><span class="dot"></span>טבלה</div>
+        <h1 class="title">השוואה בטבלה</h1>
+      </div>
+      <div class="f1 fx col" style="margin-top:36px;min-height:0;">
+        <div class="accent-border" style="margin:auto 0;">
+          <table class="dtable" style="font-size:30px;">
+            <thead><tr><th>אפשרות</th><th class="hl">עלות</th><th>זמן הקמה</th><th>מתאים ל-</th></tr></thead>
+            <tbody>
+              <tr><td>כלי <span dir="ltr">SaaS</span></td><td class="hl">$20 לחודש</td><td>דקות</td><td>צוותים קטנים</td></tr>
+              <tr><td>קובץ <span dir="ltr">HTML</span></td><td class="hl">חינם</td><td>שעה</td><td>כל אחד</td></tr>
+              <tr><td>פיתוח פנימי</td><td class="hl">גבוהה</td><td>חודשים</td><td>ארגונים גדולים</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="take" style="margin-top:32px;font-size:30px;">העמודה המודגשת היא <span class="hi">ההמלצה</span>.</div>
+    </div>
+
+    <!-- SLIDE 7: section — אמירה מרכזית עם  דגש  -->
     <div class="page dark fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div class="fx col ac" style="gap:28px;text-align:center;max-width:1400px;">
@@ -296,7 +334,7 @@ html, body {
       </div>
     </div>
 
-    <!-- SLIDE 7: closing — הנקודות שכדאי לזכור -->
+    <!-- SLIDE 8: closing — הנקודות שכדאי לזכור -->
     <div class="page aurora fx col ac jc">
       <div class="wm" role="img" aria-label="Logo"></div>
       <div style="width:100%;">
