@@ -7,7 +7,8 @@
       "type": "cover",
       "eyebrow": "Category · Short subtitle",
       "title": "Main title with a\n*highlighted phrase*",
-      "subtitle": "One opening sentence that says what this deck is about, in plain language."
+      "subtitle": "One opening sentence that says what this deck is about, in plain language.",
+      "notes": "Speaker notes go here. Press N to open the presenter view.\n\nThey never appear on the slide or in the PDF."
     },
     {
       "type": "bullets",
@@ -19,7 +20,8 @@
         "Second key point, covering a different angle of the same idea.",
         "Third key point with the concrete benefit for the audience."
       ],
-      "takeaway": "Takeaway line — *the one thing to remember*."
+      "takeaway": "Takeaway line — *the one thing to remember*.",
+      "notes": "Say the three points in your own words; the slide only holds the headline."
     },
     {
       "type": "compare",

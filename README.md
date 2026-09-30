@@ -15,6 +15,7 @@ You have a presentation to deliver in an hour. The design tool has used up your 
 - **Right-to-left is built in.** Hebrew, Arabic and other RTL languages mirror the layout, logo slot, arrow keys and swipe direction automatically. See [`examples/hebrew-example.html`](examples/hebrew-example.html).
 - **Made for large screens.** A fixed 1920×1080 canvas scales to any display. Text is sized for reading from across a room and grows when a slide has less to say, so short slides still fill the screen.
 - **Cheap to iterate.** An assistant writes a few kilobytes of content, not a whole page of HTML, and a script assembles the deck. Fixing a slide means editing a few lines of text.
+- **Presenter view.** Speaker notes per slide, hidden from the audience and the PDF. Press `N` for a second window with notes, the next slide and a timer — put it on your laptop while the deck runs on the TV.
 - **Checks itself.** A built-in checklist and an automated audit catch overflow, missing images, broken navigation and PDF problems before you walk on stage.
 
 ### What to expect
@@ -42,6 +43,7 @@ Replace the slides inside `<div id="deck">`. Navigation, progress dots and the c
 | `←` / `PageUp` | Previous slide |
 | `Home` / `End` | First / last slide |
 | `F` | Toggle fullscreen |
+| `N` | Presenter view: current and next slide, speaker notes, timer (second window; keys there drive the deck) |
 | Swipe | Next / previous |
 
 ## Install

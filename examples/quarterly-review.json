@@ -16,7 +16,8 @@
       "mode": "dark",
       "eyebrow": "Quarterly review · Q3",
       "title": "Faster releases,\n*fewer surprises*",
-      "subtitle": "What shipped, what we learned, and what we commit to next quarter."
+      "subtitle": "What shipped, what we learned, and what we commit to next quarter.",
+      "notes": "Welcome everyone. One sentence on why this quarter matters: we changed how we ship.\n\nKeep the intro under a minute."
     },
     {
       "type": "bullets",
@@ -28,7 +29,8 @@
         "The new export API removed the top support request of the quarter.",
         "Weekly release trains replaced ad-hoc deploys across all teams."
       ],
-      "takeaway": "Smaller, more frequent releases gave us *earlier feedback* at lower risk."
+      "takeaway": "Smaller, more frequent releases gave us *earlier feedback* at lower risk.",
+      "notes": "Onboarding first: 9 days to 3. Mention the export API only briefly; slide 3 covers the impact."
     },
     {
       "type": "stats",
@@ -53,7 +55,8 @@
         "value": "-33%",
         "caption": "support tickets\nper active account"
       },
-      "takeaway": "Fewer tickets free roughly *two engineer-weeks* per month."
+      "takeaway": "Fewer tickets free roughly *two engineer-weeks* per month.",
+      "notes": "The bar is tickets per 1,000 active accounts, so growth does not hide the change."
     },
     {
       "type": "compare",
@@ -91,7 +94,8 @@
         "Q3 reached *eight* with the weekly train.",
         "No increase in rollbacks."
       ],
-      "takeaway": "More releases, *same risk*."
+      "takeaway": "More releases, *same risk*.",
+      "notes": "Point at the colour change in week 6: that is when the release train started."
     },
     {
       "type": "steps",
@@ -149,7 +153,8 @@
         ]
       ],
       "highlight": 3,
-      "takeaway": "Mobile is *the one team* still off the weekly train."
+      "takeaway": "Mobile is *the one team* still off the weekly train.",
+      "notes": "Mobile is not behind by choice: their app-store review adds two days. Ask the room for ideas."
     },
     {
       "type": "statement",

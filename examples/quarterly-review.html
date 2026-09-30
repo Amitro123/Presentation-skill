@@ -171,6 +171,9 @@ html, body {
 .fx { display: flex; } .col { flex-direction: column; } .ac { align-items: center; } .jc { justify-content: center; } .jb { justify-content: space-between; } .f1 { flex: 1; } .wrap { flex-wrap: wrap; } .grid { display: grid; }
 .fw5 { font-weight: 500; } .fw6 { font-weight: 600; } .fw7 { font-weight: 700; } .fw8 { font-weight: 800; }
 
+/* Speaker notes: never shown on the slide or in print; read in the presenter view (N) */
+.notes { display: none !important; }
+
 /* Data table (clean-bordered slides) */
 .clean-bordered .eyebrow { background: var(--bg-2); border-color: var(--bg-2); }
 .dtable { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff; border-radius: 21px; overflow: hidden; }
@@ -216,6 +219,7 @@ html, body {
         <div class="specbar" style="width:280px;height:8px;border-radius:999px;"></div>
         <div class="byline on-dark">Jordan Lee · Head of Product · October 2026</div>
       </div>
+      <div class="notes" role="note"><p>Welcome everyone. One sentence on why this quarter matters: we changed how we ship.</p><p>Keep the intro under a minute.</p></div>
     </div>
 
     <!-- SLIDE 2: bullets — Three things that moved the numbers -->
@@ -234,6 +238,7 @@ html, body {
         </div>
       </div>
       <div class="take" style="margin-top:32px;font-size:30px;">Smaller, more frequent releases gave us <span class="hi">earlier feedback</span> at lower risk.</div>
+      <div class="notes" role="note"><p>Onboarding first: 9 days to 3. Mention the export API only briefly; slide 3 covers the impact.</p></div>
     </div>
 
     <!-- SLIDE 3: stats — Support load dropped by a third -->
@@ -257,6 +262,7 @@ html, body {
         </div>
       </div>
       <div class="take" style="margin-top:32px;font-size:30px;">Fewer tickets free roughly <span class="hi">two engineer-weeks</span> per month.</div>
+      <div class="notes" role="note"><p>The bar is tickets per 1,000 active accounts, so growth does not hide the change.</p></div>
     </div>
 
     <!-- SLIDE 4: compare — How we ship, before and after -->
@@ -307,6 +313,7 @@ html, body {
         </div>
       </div>
       <div class="take" style="margin-top:32px;font-size:30px;">More releases, <span class="hi">same risk</span>.</div>
+      <div class="notes" role="note"><p>Point at the colour change in week 6: that is when the release train started.</p></div>
     </div>
 
     <!-- SLIDE 6: steps — Our plan for Q4 -->
@@ -346,6 +353,7 @@ html, body {
         </div>
       </div>
       <div class="take" style="margin-top:32px;font-size:30px;">Mobile is <span class="hi">the one team</span> still off the weekly train.</div>
+      <div class="notes" role="note"><p>Mobile is not behind by choice: their app-store review adds two days. Ask the room for ideas.</p></div>
     </div>
 
     <!-- SLIDE 8: statement — Ship  less risk , not less often -->
@@ -369,6 +377,7 @@ html, body {
     <div class="nav-counter" id="nav-counter">1 / 1</div>
     <button type="button" class="nav-btn" id="next-btn" aria-label="Next slide">&rarr;</button>
     <button type="button" class="nav-btn" id="fs-btn" aria-label="Toggle fullscreen" title="Fullscreen (F)"></button>
+    <button type="button" class="nav-btn" id="pv-btn" aria-label="Open presenter view" title="Presenter view: notes, next slide, timer (N)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></button>
   </div>
 
   <script>
@@ -412,6 +421,7 @@ html, body {
         currentIndex = index;
         pages[currentIndex].classList.add('active');
         updateControls();
+        renderPresenter();
       }
       const nextSlide = () => goToSlide(currentIndex + 1);
       const prevSlide = () => goToSlide(currentIndex - 1);
@@ -431,8 +441,8 @@ html, body {
       document.addEventListener('fullscreenchange', updateFsIcon);
       updateFsIcon();
 
-      // Keyboard: arrows follow reading direction; Space/PageDown = next; PageUp = previous; Home/End = first/last; F = fullscreen
-      document.addEventListener('keydown', (e) => {
+      // Keyboard: arrows follow reading direction; Space/PageDown = next; PageUp = previous; Home/End = first/last; F = fullscreen; N = presenter view
+      function onKey(e) {
         if (e.key === ' ') { e.preventDefault(); nextSlide(); }
         else if (e.key === 'ArrowRight') { e.preventDefault(); rtl ? prevSlide() : nextSlide(); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); rtl ? nextSlide() : prevSlide(); }
@@ -440,8 +450,77 @@ html, body {
         else if (e.key === 'PageUp') { e.preventDefault(); prevSlide(); }
         else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
         else if (e.key === 'End') { e.preventDefault(); goToSlide(pages.length - 1); }
-        else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
-      });
+        else if ((e.key === 'f' || e.key === 'F') && e.currentTarget === document) { e.preventDefault(); toggleFullscreen(); }
+        else if (e.key === 'n' || e.key === 'N') { e.preventDefault(); openPresenter(); }
+      }
+      document.addEventListener('keydown', onKey);
+
+      // Presenter view: a second window (put it on your laptop screen) with the current and next slide,
+      // this slide's notes and a timer. It drives the deck: keys pressed there move the main window too.
+      let pw = null, startedAt = 0, timerId = 0;
+      const PV_CSS = `
+        html.pv, body.pv { display: block; width: auto; height: auto; min-height: 100%; overflow: auto; margin: 0; background: #111318; }
+        body.pv { padding: 24px; color: #e8eaf0; font-family: var(--font); }
+        .pv-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: start; }
+        .pv-label { font: 700 14px/1.2 var(--font); letter-spacing: .08em; text-transform: uppercase; color: #8a90a0; margin: 0 0 8px; }
+        .pv-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; background: #000; }
+        .pv-stage { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+        .pv-stage *, .pv-stage { animation: none !important; transition: none !important; }
+        .pv-end { display: flex; align-items: center; justify-content: center; height: 100%; color: #8a90a0; font: 600 20px var(--font); }
+        .pv-side { display: flex; flex-direction: column; gap: 20px; }
+        .pv-clock { display: flex; justify-content: space-between; align-items: baseline; font: 800 44px/1 var(--font); font-variant-numeric: tabular-nums; }
+        .pv-clock small { font-size: 22px; color: #8a90a0; font-weight: 700; }
+        .pv-clock button { font: 600 14px var(--font); background: #2a2e38; color: #e8eaf0; border: 0; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+        .pv-notes { margin-top: 24px; font: 500 28px/1.5 var(--font); max-width: 1400px; }
+        .pv-notes .none { color: #8a90a0; font-style: italic; }`;
+      function preview(i, box) {
+        const d = pw.document; box.innerHTML = '';
+        if (i >= pages.length) { box.innerHTML = '<div class="pv-end">End of deck</div>'; return; }
+        const stage = d.createElement('div'); stage.className = 'pv-stage';
+        const copy = pages[i].cloneNode(true); copy.classList.add('active');
+        copy.querySelectorAll('.notes').forEach(n => n.remove());
+        stage.appendChild(copy); box.appendChild(stage);
+        stage.style.transform = `scale(${box.clientWidth / 1920})`;
+      }
+      function renderPresenter() {
+        if (!pw || pw.closed) return;
+        const d = pw.document;
+        d.getElementById('pv-count').textContent = `${currentIndex + 1} / ${pages.length}`;
+        const notes = pages[currentIndex].querySelector('.notes');
+        d.getElementById('pv-notes').innerHTML = notes ? notes.innerHTML : '<span class="none" dir="ltr">No notes for this slide.</span>';
+        preview(currentIndex, d.getElementById('pv-now'));
+        preview(currentIndex + 1, d.getElementById('pv-next'));
+      }
+      function tick() {
+        if (!pw || pw.closed) { clearInterval(timerId); return; }
+        const s = Math.floor((Date.now() - startedAt) / 1000);
+        pw.document.getElementById('pv-time').textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+      }
+      function openPresenter() {
+        if (pw && !pw.closed) { pw.focus(); return; }
+        pw = window.open('', 'deck-presenter', 'width=1280,height=820');
+        if (!pw) return;  // blocked by the browser
+        const head = [...document.querySelectorAll('style, link[rel="stylesheet"]')].map(n => n.outerHTML).join('\n');
+        const d = pw.document;
+        d.open();
+        d.write(`<!DOCTYPE html><html class="pv" lang="${document.documentElement.lang}" dir="${document.documentElement.dir}"><head><meta charset="utf-8"><title>Presenter · ${document.title}</title>${head}<style>${PV_CSS}</style></head>
+          <body class="pv"><div class="pv-grid">
+            <div><p class="pv-label">Now</p><div class="pv-frame" id="pv-now"></div></div>
+            <div class="pv-side">
+              <div class="pv-clock"><span id="pv-time" dir="ltr">00:00</span><small id="pv-count" dir="ltr"></small><button type="button" id="pv-reset">Reset timer</button></div>
+              <div><p class="pv-label">Next</p><div class="pv-frame" id="pv-next"></div></div>
+            </div>
+          </div>
+          <p class="pv-label" style="margin-top:24px">Notes</p><div class="pv-notes" id="pv-notes"></div></body></html>`);
+        d.close();
+        d.addEventListener('keydown', onKey);
+        d.getElementById('pv-reset').addEventListener('click', () => { startedAt = Date.now(); tick(); });
+        pw.addEventListener('resize', renderPresenter);
+        startedAt = Date.now(); clearInterval(timerId); timerId = setInterval(tick, 1000); tick();
+        renderPresenter();
+      }
+      document.getElementById('pv-btn').addEventListener('click', openPresenter);
+      window.addEventListener('beforeunload', () => { if (pw && !pw.closed) pw.close(); });
 
       // Swipe: swiping toward the start of the reading direction goes forward
       let touchStartX = 0;

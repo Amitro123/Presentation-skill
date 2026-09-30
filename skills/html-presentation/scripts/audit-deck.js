@@ -108,7 +108,7 @@ const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x
     const small = await pg.evaluate(sel => {
       const out = new Set();
       document.querySelectorAll(sel + ' *').forEach(e => {
-        if (e.closest('.nav-bar,.nav-controls')) return;
+        if (e.closest('.nav-bar,.nav-controls') || !e.getClientRects().length) return;   // skip hidden text, e.g. speaker notes
         const own = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
         if (!own) return;
         const fs = parseFloat(getComputedStyle(e).fontSize);

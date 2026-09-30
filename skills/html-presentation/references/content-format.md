@@ -32,7 +32,7 @@ The script adds markup, theme, logo, navigation and print rules from `assets/tem
 
 ## Slide types
 
-All types accept `mode` (`aurora` or `dark`) except `cover`, where it selects the cover's look.
+All types accept `mode` (`aurora` or `dark`) except `cover`, where it selects the cover's look, and `notes` (speaker notes, see below).
 
 | type | Fields | Limits |
 |---|---|---|
@@ -50,6 +50,10 @@ All types accept `mode` (`aurora` or `dark`) except `cover`, where it selects th
 | `raw` | `html` (slide inner markup), `mode`, `cls`, `noLogo` | — |
 
 The builder prints a warning when a limit is exceeded.
+
+### Speaker notes
+
+Any slide can have `"notes": "..."` — what the presenter should say. Notes are never shown on the slide or in the PDF. Pressing `N` (or the screen button in the navigation bar) opens a presenter window with the current and next slide, the notes and a timer; keys pressed in that window drive the deck. A blank line (`\n\n`) starts a new paragraph. Write notes when the user asks for them or supplies talking points; do not pad every slide.
 
 ### Images
 
