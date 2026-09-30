@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Builder unit tests
+        run: node --test tests/*.test.js
       - name: Validate HTML
         run: npx --yes html-validate@9 "skills/html-presentation/assets/*.html" "examples/*.html"
       - name: Examples are up to date with their content files

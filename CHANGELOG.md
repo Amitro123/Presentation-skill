@@ -2,6 +2,11 @@
 
 Release notes for each version. The Release workflow publishes the section that matches the tag.
 
+## Unreleased
+
+- **Tests:** 23 unit tests for the deck builder (`npm test`, run in CI): every slide type, escaping, RTL isolation, dark mode, density warnings, logo and theme tokens, embedding, images, tables, notes, timer options and command-line flags.
+- **Builder:** the slide title copied into each slide's HTML comment is now escaped as well.
+
 ## v1.2.1
 
 Bug fixes, most found in a code review of v1.2.0.

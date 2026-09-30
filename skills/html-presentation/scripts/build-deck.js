@@ -303,7 +303,7 @@ const slides = (content.slides || []).map((s, i) => {
   const gen = T[s.type]; if (!gen) { console.error(`slide ${i + 1}: unknown type "${s.type}"`); process.exit(1); }
   const o = gen(s); const mode = s.mode && s.type !== 'cover' && s.type !== 'raw' ? s.mode : o.mode;
   const noLogo = meta.logoPosition === 'none' || o.noWm;
-  return `    <!-- SLIDE ${i + 1}: ${s.type}${s.title ? ' — ' + String(s.title).replace(/\*|--|\n/g, ' ').slice(0, 60) : ''} -->
+  return `    <!-- SLIDE ${i + 1}: ${s.type}${s.title ? ' — ' + esc(String(s.title).replace(/\*|-{2,}|\n/g, ' ').slice(0, 60)) : ''} -->
     <div class="page ${mode}${o.cls ? ' ' + o.cls : ''}">
       ${noLogo ? '' : WM}${o.body}${s.notes ? `
       <div class="notes" role="note">${String(s.notes).split(/\n{2,}/).map(par => `<p>${lines(par)}</p>`).join('')}</div>` : ''}
