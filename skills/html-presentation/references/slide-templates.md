@@ -124,7 +124,7 @@ Place it after a `.hd` header block; add a `.take` strip underneath.
       <div class="glass fx col" style="padding:30px 24px;gap:14px;background:rgba(255,255,255,.94);">
         <div class="numchip specbar" style="width:48px;height:48px;font-size:24px;">1</div>
         <div class="ink-t fw8" style="font-size:22px;line-height:1.25;">Point</div>
-        <div class="muted fw6" style="font-size:18px;line-height:1.45;">Supporting sentence.</div>
+        <div class="muted fw6" style="font-size:20px;line-height:1.45;">Supporting sentence.</div>
       </div>
       <!-- repeat for 2 and 3 -->
     </div>

@@ -43,6 +43,7 @@ This list is a default. A project can change it: `assets/references/verification
 | C14 | Works offline | No runtime `<script src="http…">`; fonts may load from a CDN but must have a system fallback | Audit A6 |
 | C15 | Images | Every `<img>` has `alt` (empty string for purely decorative images) and loads | Audit A4/A5 |
 | C16 | No overflow | No element extends past its slide at 1920×1080 | Audit A12 |
+| C17 | Large-screen legibility | No text smaller than 20px on the 1920px canvas | Audit A14 |
 
 ## Repair runbook
 
@@ -59,6 +60,7 @@ C13 wrong page count  -> restore the @media print block; make sure no slide uses
 C14 CDN script        -> inline or vendor the code, or drop the feature.
 C15 missing alt       -> add a descriptive alt, or alt="" for decoration.
 C16 overflow          -> shorten text or split the slide.
+C17 small text        -> raise to at least 20px, or cut the text.
 ```
 
 ## Report format

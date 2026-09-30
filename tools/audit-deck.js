@@ -101,6 +101,21 @@ const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x
       add('A12', `Nothing overflows its slide at ${w}x${h}`, bad.length === 0, bad.join(', '));
     }
 
+    // legibility on large screens: smallest rendered text on a 1920-wide canvas
+    await pg.setViewportSize({ width: 1920, height: 1080 }); await pg.waitForTimeout(150);
+    const small = await pg.evaluate(sel => {
+      const out = new Set();
+      document.querySelectorAll(sel + ' *').forEach(e => {
+        if (e.closest('.nav-bar,.nav-controls')) return;
+        const own = [...e.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+        if (!own) return;
+        const fs = parseFloat(getComputedStyle(e).fontSize);
+        if (fs < 20) out.add(Math.round(fs) + 'px');
+      });
+      return [...out];
+    }, info.sel);
+    add('A14', 'Text is at least 20px on the 1920px canvas (readable from across a room)', small.length === 0, small.length ? `found ${small.join(', ')}` : '');
+
     // print
     await pg.setViewportSize({ width: VIEWS[0][0], height: VIEWS[0][1] });
     try {

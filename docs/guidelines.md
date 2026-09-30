@@ -26,6 +26,16 @@ Rules of thumb for decks built on `template.html`.
 - Keep the logo in the same position on every slide.
 - Prefer restraint: staggered fade-in is built in; avoid extra effects.
 
+## Large screens and projectors
+
+The template is designed first for a TV or projector viewed from across a room.
+
+- Body text is 20px or larger on the 1920×1080 canvas; titles are 70px and up. Do not shrink text to make something fit — cut words or split the slide.
+- Keep important content inside the slide's padding (104px sides, 74px top, 120px bottom); televisions may crop the outer edge and the navigation bar sits at the bottom.
+- Use high contrast. Prefer `.inkcard` and `dark` slides for the most important statements.
+- Press `F` for fullscreen. On a 16:9 display the deck then fills the screen with no bars.
+- Connect the display at 1920×1080 or higher; the deck scales to any resolution but was tuned at that size.
+
 ## Content
 
 - No emoji by default; use `.dot`, `.numchip` or `.chip` for visual punctuation. Set `emoji: allowed` in `assets/brand.md` if your style uses them.
