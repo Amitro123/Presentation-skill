@@ -72,7 +72,7 @@ The skill is self-contained: instructions, references, scripts and the template 
 
 Or from a local clone: `claude --plugin-dir ./plugin` to try it for one session, `claude plugin install ./plugin --scope user` to keep it.
 
-**Claude Desktop / Cowork** — download [`html-presentation.skill`](https://raw.githubusercontent.com/Amitro123/Presentation-skill/main/html-presentation.skill), then *Plugins → Install from file* (or *Settings → Skills*).
+**Claude Desktop / Cowork** — download [`html-presentation.skill`](https://github.com/Amitro123/Presentation-skill/releases/latest/download/html-presentation.skill) (always the latest release), then *Plugins → Install from file* (or *Settings → Skills*).
 
 **Copy the folder**
 
