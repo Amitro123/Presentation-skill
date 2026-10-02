@@ -143,6 +143,25 @@ const VIEWS = (opt.views || '1920x1080,1366x768').split(',').map(v => v.split('x
     }
     add('A15', `No empty band taller than ${GAP}px between content on a slide`, gaps.length === 0, gaps.join(', '));
 
+    // overlap: content boxes must not run under the takeaway strip
+    const overlaps = [];
+    for (let i = 0; i < info.n; i++) {
+      await pg.evaluate(([sel, i]) => { const s = [...document.querySelectorAll(sel)]; s.forEach(x => x.classList.remove('active')); s[i].classList.add('active'); }, [info.sel, i]);
+      await pg.waitForTimeout(100);
+      const hit = await pg.evaluate(([sel, i]) => {
+        const s = document.querySelectorAll(sel)[i], t = s.querySelector('.take');
+        if (!t) return false;
+        const tr = t.getBoundingClientRect();
+        return [...s.querySelectorAll('.glass,.inkcard,figure,.accent-border,img')].some(e => {
+          if (t.contains(e)) return false;
+          const r = e.getBoundingClientRect();
+          return r.height && r.bottom > tr.top + 2 && r.top < tr.bottom && r.right > tr.left && r.left < tr.right;
+        });
+      }, [info.sel, i]);
+      if (hit) overlaps.push(i + 1);
+    }
+    add('A16', 'Nothing runs under the takeaway strip', overlaps.length === 0, overlaps.length ? `slides ${overlaps.join(', ')}` : '');
+
     // print
     await pg.setViewportSize({ width: VIEWS[0][0], height: VIEWS[0][1] });
     try {

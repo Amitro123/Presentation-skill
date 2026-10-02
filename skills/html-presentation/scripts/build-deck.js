@@ -221,7 +221,9 @@ const T = {
     const pw = portrait ? `calc((100cqh - 36px${s.caption ? ' - 50px' : ''}) * ${ratio.toFixed(4)} + 36px)` : null;
     // landscape pictures: the frame takes the picture's proportions and is centred, instead of stretching to the row height
     const hug = dim && !portrait && s.fit !== 'cover';
-    const frame = `<figure class="glass fx col" style="margin:0;padding:18px;gap:14px;min-height:0;${hug ? 'align-self:center;' : ''}">
+    // capped by the area's height (100cqh) so a wide picture never runs under the takeaway strip
+    const hw = hug ? `calc((100cqh - 36px${s.caption ? ' - 50px' : ''}) * ${ratio.toFixed(4)} + 36px)` : null;
+    const frame = `<figure class="glass fx col" style="margin:0;padding:18px;gap:14px;min-height:0;${hug ? `align-self:center;justify-self:center;width:min(100%, ${hw});` : ''}">
             <div class="media${s.fit === 'cover' ? ' cover' : ''}" style="${hug ? `aspect-ratio:${dim[0]}/${dim[1]};` : 'flex:1;'}"><img src="${esc(imgSrc(s.src))}" alt="${esc(s.alt || '')}"></div>${s.caption ? `
             <figcaption class="muted fw6" style="font-size:22px;text-align:center;">${rich(s.caption)}</figcaption>` : ''}
           </figure>`;

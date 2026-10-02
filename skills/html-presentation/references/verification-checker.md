@@ -45,6 +45,7 @@ This list is a default. A project can change it: `assets/references/verification
 | C16 | No overflow | No element extends past its slide at 1920×1080 | Audit A12 |
 | C17 | Large-screen legibility | No text smaller than 20px on the 1920px canvas | Audit A14 |
 | C18 | No large empty areas | No empty band taller than 200px between pieces of content | Audit A15 |
+| C19 | No overlap | No card, image or table runs under the takeaway strip | Audit A16 |
 
 ## Repair runbook
 
@@ -62,6 +63,7 @@ C14 CDN script        -> inline or vendor the code, or drop the feature.
 C15 missing alt       -> add a descriptive alt, or alt="" for decoration.
 C16 overflow          -> shorten text or split the slide.
 C17 small text        -> raise to at least 20px, or cut the text.
+C19 overlap           -> shorten the content above the takeaway, or drop the takeaway on that slide.
 C18 empty area        -> use a slide type that fits the amount of content, merge two thin slides, or add a takeaway; the builder already scales text to fill.
 ```
 

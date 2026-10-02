@@ -169,6 +169,7 @@ test('image: landscape uses proportional columns; missing alt warns; missing src
   const land = build({ slides: [{ type: 'image', title: 'Chart', src: 'c.png', points: ['a'] }] }, [], { 'c.png': png(1600, 900) });
   assert.match(deckOf(land.html), /grid-template-columns:1fr 1\.35fr/);
   assert.match(deckOf(land.html), /class="media" style="aspect-ratio:1600\/900;"/, 'landscape frame hugs the picture');
+  assert.match(deckOf(land.html), /width:min\(100%, calc\(\(100cqh - 36px\) \* 1\.7778 \+ 36px\)\)/, 'and is capped by the available height');
   assert.match(land.stderr, /add "alt" text/);
   const noSrc = one({ type: 'image', title: 'x' });
   assert.notEqual(noSrc.code, 0);

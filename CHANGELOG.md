@@ -6,7 +6,8 @@ Release notes for each version. The Release workflow publishes the section that 
 
 - **Tests:** 23 unit tests for the deck builder (`npm test`, run in CI): every slide type, escaping, RTL isolation, dark mode, density warnings, logo and theme tokens, embedding, images, tables, notes, timer options and command-line flags.
 - **Builder:** the slide title copied into each slide's HTML comment is now escaped as well.
-- **Image slides:** a landscape picture's frame now takes the picture's proportions instead of stretching to the row height, so no empty bands above and below it.
+- **Image slides:** a landscape picture's frame now takes the picture's proportions instead of stretching to the row height, so no empty bands above and below it; its size is capped by the available height so it never runs under the takeaway strip.
+- **Audit:** new check A16 fails when a card, image or table runs under the takeaway strip (it previously went unnoticed because nothing left the slide).
 
 ## v1.2.1
 
