@@ -1,5 +1,7 @@
 # Presentation Skill
 
+[![Latest release](https://img.shields.io/github/v/release/Amitro123/Presentation-skill)](https://github.com/Amitro123/Presentation-skill/releases/latest) [![Validate](https://github.com/Amitro123/Presentation-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/Amitro123/Presentation-skill/actions/workflows/validate.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 **Out of time, out of tokens, and the layout keeps breaking? Build the deck as a single HTML file.**
 
 You have a presentation to deliver in an hour. The design tool has used up your credits. The slide editor will not keep right-to-left text in order. This project gives you a third option: a finished, large-screen presentation template, and an AI skill that fills it from your documents — in one file, with no account, no subscription and no software to install.
@@ -157,7 +159,7 @@ Nothing is fixed. Colors, font, logo, logo position, language, slide counts, den
   - `aurora` — light, soft gradients; the default for reading content.
   - `dark` — deep background with colored glow; covers, dividers, strong statements.
   - `clean-bordered` — white with a gradient frame (`.accent-border`); tables and data.
-- **Slide types** (content files): cover, section, statement, bullets, cards, compare, steps, stats, image, table, closing, and `raw` for anything else. Images keep their proportions — a phone screenshot gets a narrow column that fills the height.
+- **Slide types** (content files): cover, section, statement, bullets, cards, compare, steps, stats, image, table, closing, and `raw` for anything else. Images keep their proportions — a phone screenshot gets a narrow column that fills the height, and a wide chart gets a frame that fits it exactly, never running into the takeaway strip.
 - **Components:** `.glass` and `.inkcard` surfaces, `.eyebrow` label, `.title` / `.sub`, `.take` takeaway strip, `.numchip`, bars, big numbers, `.dtable` tables, `.media` image frames.
 - **Language:** English and left-to-right by default. For RTL languages set `<html dir="rtl" lang="…">` and change the font.
 
@@ -169,14 +171,14 @@ Open the deck in Chrome → `Ctrl/Cmd + P` → Destination *Save as PDF*, Layout
 
 ## Audit your deck
 
-`scripts/audit-deck.js` opens a deck in Chromium and checks what a script can check: JavaScript errors, broken images and missing `alt`, keyboard navigation, reduced-motion and print rules, offline safety, RTL term isolation, text size for large screens, overflow on every slide at several screen sizes, large empty areas, and that PDF export gives one page per slide. `--sheet=sheet.png` also writes one image with every slide, for a quick visual check.
+`scripts/audit-deck.js` opens a deck in Chromium and checks what a script can check: JavaScript errors, broken images and missing `alt`, keyboard navigation, reduced-motion and print rules, offline safety, RTL term isolation, text size for large screens, overflow on every slide at several screen sizes, large empty areas, content running under the takeaway strip, and that PDF export gives one page per slide. `--sheet=sheet.png` also writes one image with every slide, for a quick visual check.
 
 ```bash
 npm i -D playwright
 node skills/html-presentation/scripts/audit-deck.js examples/hebrew-example.html --sheet=sheet.png
 ```
 
-It also works on single-file decks not built from this template, as long as slides are `.page` or `.slide` elements and the visible one has `.active`. It exits with code 1 on any failure, so it can run in CI. CI in this repository runs [`html-validate`](https://html-validate.org), checks that the examples match their content files, and that the packaged skill and plugin are up to date.
+It also works on single-file decks not built from this template, as long as slides are `.page` or `.slide` elements and the visible one has `.active`. It exits with code 1 on any failure, so it can run in CI. CI in this repository runs the builder's unit tests and [`html-validate`](https://html-validate.org), and checks that the examples match their content files and that the packaged skill and plugin are up to date.
 
 ## Project layout
 
@@ -189,9 +191,29 @@ It also works on single-file decks not built from this template, as long as slid
 ├── examples/                   # quarterly-review (LTR) and hebrew-example (RTL): content .json + built .html
 ├── assets/                     # your logo, brand.md, references/, images (see assets/README.md)
 ├── docs/                       # design system, authoring guidelines, README images
-├── tools/package_skill.py      # builds plugin/ and the .skill file
-└── .github/workflows/          # validation on push / PR, release on tag
+├── tests/                      # unit tests for the deck builder (npm test)
+├── tools/
+│   ├── package_skill.py        # builds plugin/ and the .skill file
+│   └── release_notes.py        # prints a version's section of CHANGELOG.md
+├── CHANGELOG.md                # release notes, one section per version
+└── .github/workflows/          # tests and validation on push / PR; releases
 ```
+
+## Contributing
+
+Issues and pull requests are welcome. Before opening a pull request:
+
+```bash
+npm test                  # builder unit tests (no dependencies)
+npm run validate          # html-validate on the template and examples
+npm run audit             # browser audit (needs Playwright + Chromium)
+npm run build:examples    # regenerate examples/*.html from their .json files
+npm run package           # regenerate plugin/skills/ and html-presentation.skill
+```
+
+Edit only `skills/html-presentation/` and the example `.json` files; everything else is generated, and CI fails if it is stale. A change to the builder comes with a test in `tests/build-deck.test.js`. Contributor rules are in [`CLAUDE.md`](CLAUDE.md).
+
+**Releasing:** bump the version in `plugin/.claude-plugin/plugin.json`, add a `## vX.Y.Z` section to [`CHANGELOG.md`](CHANGELOG.md), then push a `vX.Y.Z` tag — or, from any browser, *Actions → Release → Run workflow* with the version. The workflow creates the tag and the GitHub release with the `.skill` file and the changelog section as notes; running it again for an existing version updates them.
 
 ## License
 
