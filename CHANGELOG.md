@@ -2,7 +2,9 @@
 
 Release notes for each version. The Release workflow publishes the section that matches the tag.
 
-## Unreleased
+## v1.3.0
+
+Quality release: the builder is now covered by unit tests, image slides lay out correctly for any picture, and the audit catches overlapping content.
 
 - **Tests:** 23 unit tests for the deck builder (`npm test`, run in CI): every slide type, escaping, RTL isolation, dark mode, density warnings, logo and theme tokens, embedding, images, tables, notes, timer options and command-line flags.
 - **Builder:** the slide title copied into each slide's HTML comment is now escaped as well.
