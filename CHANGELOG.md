@@ -6,6 +6,7 @@ Release notes for each version. The Release workflow publishes the section that 
 
 - **Tests:** 23 unit tests for the deck builder (`npm test`, run in CI): every slide type, escaping, RTL isolation, dark mode, density warnings, logo and theme tokens, embedding, images, tables, notes, timer options and command-line flags.
 - **Builder:** the slide title copied into each slide's HTML comment is now escaped as well.
+- **Image slides:** a landscape picture's frame now takes the picture's proportions instead of stretching to the row height, so no empty bands above and below it.
 
 ## v1.2.1
 

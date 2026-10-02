@@ -219,8 +219,10 @@ const T = {
     // portrait images (phone screenshots) get a column as wide as the picture, so it fills the height
     // width of a portrait frame = its height (the grid's height, 100cqh, minus padding and caption) x aspect ratio
     const pw = portrait ? `calc((100cqh - 36px${s.caption ? ' - 50px' : ''}) * ${ratio.toFixed(4)} + 36px)` : null;
-    const frame = `<figure class="glass fx col" style="margin:0;padding:18px;gap:14px;min-height:0;">
-            <div class="media${s.fit === 'cover' ? ' cover' : ''}" style="flex:1;"><img src="${esc(imgSrc(s.src))}" alt="${esc(s.alt || '')}"></div>${s.caption ? `
+    // landscape pictures: the frame takes the picture's proportions and is centred, instead of stretching to the row height
+    const hug = dim && !portrait && s.fit !== 'cover';
+    const frame = `<figure class="glass fx col" style="margin:0;padding:18px;gap:14px;min-height:0;${hug ? 'align-self:center;' : ''}">
+            <div class="media${s.fit === 'cover' ? ' cover' : ''}" style="${hug ? `aspect-ratio:${dim[0]}/${dim[1]};` : 'flex:1;'}"><img src="${esc(imgSrc(s.src))}" alt="${esc(s.alt || '')}"></div>${s.caption ? `
             <figcaption class="muted fw6" style="font-size:22px;text-align:center;">${rich(s.caption)}</figcaption>` : ''}
           </figure>`;
     if (!pts.length) return { mode: 'aurora', body: `
